@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 480" role="img" aria-labelledby="title desc">
+  <title id="title">CyberArcade</title>
+  <desc id="desc">Cybersecurity training platform banner.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="100%" stop-color="#111214"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8b111b"/>
+      <stop offset="100%" stop-color="#b31b28"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="480" rx="40" fill="url(#bg)"/>
+  <circle cx="1380" cy="80" r="210" fill="#8b111b" opacity=".10"/>
+  <circle cx="1500" cy="420" r="280" fill="#4b4b4d" opacity=".09"/>
+  <path d="M90 390C260 210 430 160 640 190" fill="none" stroke="#8b111b" stroke-width="8" opacity=".65"/>
+  <path d="M90 420C270 250 440 220 620 245" fill="none" stroke="#4b4b4d" stroke-width="5" opacity=".5"/>
+  <g transform="translate(105 95)">
+    <rect width="265" height="265" rx="46" fill="#050505" stroke="#2f3032" stroke-width="4"/>
+    <circle cx="96" cy="104" r="30" fill="#7f111b"/>
+    <rect x="89" y="132" width="14" height="62" rx="7" fill="#55565a"/>
+    <path d="M45 190h120l-24 28H69z" fill="#55565a"/>
+    <path d="M155 44h54c13 0 24 8 29 21l33 104c4 14-6 28-21 28h-47l-18-22h46c7 0 12-7 10-14l-30-92c-2-6-8-9-14-9h-50z" fill="#4b4b4d"/>
+    <rect x="151" y="74" width="79" height="65" rx="14" fill="#050505" stroke="#4b4b4d" stroke-width="7"/>
+    <circle cx="191" cy="101" r="8" fill="#4b4b4d"/>
+    <path d="M177 126h28l-6-17h-16z" fill="#4b4b4d"/>
+  </g>
+  <text x="455" y="190" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="800" letter-spacing="3">CYBER<tspan fill="url(#accent)">ARCADE</tspan></text>
+  <text x="460" y="255" fill="#c5c6c8" font-family="Arial, Helvetica, sans-serif" font-size="28" letter-spacing="1.2">AI-Powered Cybersecurity Training Platform</text>
+  <rect x="460" y="300" width="530" height="5" rx="3" fill="url(#accent)"/>
+  <text x="460" y="348" fill="#8e9094" font-family="Arial, Helvetica, sans-serif" font-size="20">Learn • Practice • Validate</text>
+  <text x="460" y="382" fill="#8e9094" font-family="Arial, Helvetica, sans-serif" font-size="18">Browser-based labs · Docker isolation · AI guidance</text>
+</svg>
