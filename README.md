@@ -8,7 +8,7 @@
 
 <p><strong>AI-Powered Cybersecurity Training Platform</strong></p>
 
-<p><em>Master the Art of Cyber Offense. Build Your Defense.</em></p>
+<p><em>Learn. Practice. Validate.</em></p>
 
 <img src="assets/banner/banner.png" width="800" alt="CyberArcade Platform Banner" />
 
@@ -33,7 +33,7 @@
 
 <br/>
 
-[Live Demo](#) · [Documentation](#documentation) · [Report Bug](https://github.com/Mido-ahmed586/cyberarcade/issues/new?template=bug_report.yml) · [Request Feature](https://github.com/Mido-ahmed586/cyberarcade/issues/new?template=feature_request.yml)
+[Run Locally](#getting-started) · [Documentation](docs/README.md) · [Report Bug](https://github.com/Mido-ahmed586/cyberarcade/issues/new?template=bug_report.yml) · [Request Feature](https://github.com/Mido-ahmed586/cyberarcade/issues/new?template=feature_request.yml)
 
 </div>
 
@@ -44,6 +44,7 @@
 - [Overview](#overview)
 - [Key Features](#key-features)
 - [Screenshots](#screenshots)
+- [Documentation](docs/README.md)
 - [Architecture](#architecture)
 - [Technology Stack](#technology-stack)
 - [Getting Started](#getting-started)
@@ -72,11 +73,11 @@ Instructors manage classrooms, track student progress, and publish content throu
 
 | Metric | Value |
 |---|---|
-| Training Modules | 45+ |
-| Live Lab Environments | 14 |
-| AI Assistance | 24/7 |
+| Hands-on Labs | 45+ |
+| Lab Scenarios | 4 |
+| AI Assistance | Context-aware |
 | Supported Roles | Student · Instructor · Admin |
-| Container Isolation | Full Docker network segregation |
+| Container Isolation | Per-lab Docker networks |
 
 
 ## Why CyberArcade?
@@ -143,7 +144,7 @@ Tiered subscription plans control access to advanced courses and lab environment
 
 ## Screenshots
 
-> Screenshots are taken from the live platform. Add your own by replacing the placeholder images in `screenshots/`.
+> Screenshots below highlight the main student, instructor, AI, and administration workflows.
 
 <table>
   <tr>
@@ -184,7 +185,19 @@ Tiered subscription plans control access to advanced courses and lab environment
   </tr>
 </table>
 
-> The screenshots above showcase the main student, instructor, AI, and administration workflows.
+
+---
+
+## Documentation
+
+The repository includes focused documentation for setup and extending the training labs.
+
+| Guide | Description |
+|---|---|
+| [Deployment Guide](docs/deployment/README.md) | Docker, Ubuntu Server, reverse proxy, and production deployment |
+| [Lab Development Guide](docs/labs/README.md) | Structure and workflow for creating new lab scenarios |
+
+For API exploration during local development, open FastAPI Swagger UI at http://localhost:8000/docs.
 
 ---
 
@@ -383,7 +396,7 @@ Run backend and frontend separately for hot-reload development.
 **Backend**
 
 ```bash
-cd backend/cyberarcade-backend
+cd Backend/Backend/cyberarcade-backend
 
 # Install dependencies
 pip install -r requirements.txt
@@ -405,7 +418,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 **Frontend**
 
 ```bash
-cd frontend/cyberarcade
+cd Frontend/Frontend/cyberarcade
 
 # Install dependencies
 npm install
@@ -443,7 +456,7 @@ docker compose up -d --build
 
 ### Lab Credentials
 
-The training labs use intentionally weak, isolated credentials for educational scenarios. They are not production credentials.
+The training labs use intentionally weak, isolated credentials for educational scenarios. These values are part of the lab exercises and must never be reused outside the local training environment.
 
 | Service | Credentials |
 |---|---|
@@ -460,28 +473,30 @@ Copy `.env.example` to `.env` and set the following variables:
 
 ```env
 # ─── Application ────────────────────────────────────────
-SECRET_KEY=your-256-bit-secret-key-here
+CYBERARCADE_ADMIN_EMAIL=admin@example.com
+CYBERARCADE_ADMIN_PASSWORD=replace-with-a-strong-password
+SECRET_KEY=generate-a-long-random-secret
 ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=60
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_DAYS=7
 
 # ─── Database ───────────────────────────────────────────
-DATABASE_URL=postgresql+asyncpg://cyberarcade:password@localhost:5432/cyberarcade_db
-POSTGRES_USER=cyberarcade
-POSTGRES_PASSWORD=change-me-in-production
-POSTGRES_DB=cyberarcade_db
-
-# ─── Lab Infrastructure ─────────────────────────────────
-SCENARIOS_BASE=/app/scenarios      # Path inside backend container
+POSTGRES_USER=cyberarcade_admin
+POSTGRES_PASSWORD=replace-with-a-strong-database-password
 
 # ─── AI Service ─────────────────────────────────────────
-AI_API_KEY=your-ai-api-key
-AI_MODEL=your-model-name
+GROQ_API_KEY=your-groq-api-key
 
-# ─── Frontend ───────────────────────────────────────────
-VITE_API_BASE_URL=http://localhost:8000
-VITE_GUAC_SSH_URL=http://localhost:8081
-VITE_GUAC_DF_URL=http://localhost:8082
-VITE_GUAC_MSF_URL=http://localhost:8080
+# ─── Email (optional) ─────────────────────────────────
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-gmail-app-password
+SMTP_FROM=CyberArcade <your-email@gmail.com>
+
+# ─── Google OAuth (optional) ──────────────────────────
+GOOGLE_CLIENT_ID=your-client-id
+GOOGLE_CLIENT_SECRET=your-client-secret
 ```
 
 ---
@@ -659,24 +674,20 @@ All contributions must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Team
 
+CyberArcade is developed as a collaborative cybersecurity education project. See the repository contributors graph for the latest contributor list.
+
 <table>
   <tr>
     <td align="center">
-      <img src="assets/team/placeholder-avatar.png" width="80" style="border-radius:50%"/><br/>
+      <img src="assets/logo/logo.svg" width="80" alt="CyberArcade"/><br/>
       <b>Mohammed Ahmed</b><br/>
       <sub>Lead Developer & Architect</sub><br/>
       <a href="https://github.com/Mido-ahmed586">@Mido-ahmed586</a>
     </td>
     <td align="center">
-      <img src="assets/team/placeholder-avatar.png" width="80" style="border-radius:50%"/><br/>
-      <b>Project Supervisor</b><br/>
-      <sub>Academic Supervisor</sub><br/>
-      <a href="#">University Name</a>
-    </td>
-    <td align="center">
-      <img src="assets/team/placeholder-avatar.png" width="80" style="border-radius:50%"/><br/>
+      <img src="assets/logo/logo.svg" width="80" alt="CyberArcade"/><br/>
       <b>Contributors</b><br/>
-      <sub>Open Source Community</sub><br/>
+      <sub>Project Contributors</sub><br/>
       <a href="https://github.com/Mido-ahmed586/cyberarcade/graphs/contributors">View all</a>
     </td>
   </tr>
