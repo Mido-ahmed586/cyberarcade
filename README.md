@@ -2,7 +2,7 @@
 
 <br/>
 
-<img src="assets/logo/logo.png" width="120" alt="CyberArcade Logo" />
+<img src="assets/logo/logo.svg" width="120" alt="CyberArcade Logo" />
 
 <h1>CyberArcade</h1>
 
@@ -10,7 +10,7 @@
 
 <p><em>Learn. Practice. Validate.</em></p>
 
-<img src="assets/banner/banner.png" width="800" alt="CyberArcade Platform Banner" />
+<img src="assets/banner/banner.svg" width="800" alt="CyberArcade Platform Banner" />
 
 <br/><br/>
 
