@@ -1,3 +1,0 @@
-PLACEHOLDER — Replace this file with your actual logo PNG.
-Recommended dimensions: 512x512 px (square), transparent background.
-File should be named: logo.png
