@@ -1,16 +1,13 @@
 # CyberArcade Documentation
 
-This directory contains extended technical documentation for CyberArcade.
+This directory contains focused technical documentation for running and extending CyberArcade.
 
-## Contents
+## Guides
 
 | Document | Description |
 |---|---|
-| [Architecture](architecture/README.md) | System design, data flow, and component diagrams |
-| [API Reference](api/README.md) | Full endpoint documentation with request/response examples |
-| [Deployment](deployment/README.md) | Production deployment guide (Docker, Ubuntu Server, reverse proxy) |
-| [Lab Scenarios](labs/README.md) | How to create and register new lab scenarios |
-| [Database Schema](database/README.md) | ORM models, relationships, and migration guide |
+| [Deployment Guide](deployment/README.md) | Docker, Ubuntu Server, reverse proxy, and production deployment |
+| [Lab Development Guide](labs/README.md) | Lab structure, scenario conventions, and creating new training environments |
 
 ## Quick Links
 
@@ -19,3 +16,5 @@ This directory contains extended technical documentation for CyberArcade.
 - [Security Policy](../SECURITY.md)
 - [Changelog](../CHANGELOG.md)
 - [Live API Docs](http://localhost:8000/docs) (when running locally)
+
+> API documentation is generated automatically by FastAPI. Start the backend locally and open `http://localhost:8000/docs`.
