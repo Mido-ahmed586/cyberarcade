@@ -10,8 +10,6 @@
 
 <p><em>Learn. Practice. Validate.</em></p>
 
-<img src="assets/banner/banner.png" width="800" alt="CyberArcade Platform Banner" />
-
 <br/><br/>
 
 <!-- TECH STACK BADGES -->
@@ -22,14 +20,14 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org)
 
 <!-- STATUS BADGES -->
-[![CI](https://img.shields.io/github/actions/workflow/status/Mido-ahmed586/cyberarcade/ci.yml?style=for-the-badge&label=CI&logo=github-actions&logoColor=white)](https://github.com/Mido-ahmed586/cyberarcade/actions)
-[![Security Scan](https://img.shields.io/github/actions/workflow/status/Mido-ahmed586/cyberarcade/security-scan.yml?style=for-the-badge&label=Security&logo=shield&logoColor=white)](https://github.com/Mido-ahmed586/cyberarcade/actions)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![CI](https://github.com/Mido-ahmed586/cyberarcade/actions/workflows/ci.yml/badge.svg)](https://github.com/Mido-ahmed586/cyberarcade/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/Mido-ahmed586/cyberarcade/actions/workflows/security-scan.yml/badge.svg)](https://github.com/Mido-ahmed586/cyberarcade/actions/workflows/security-scan.yml)
+[![License](https://img.shields.io/github/license/Mido-ahmed586/cyberarcade)](LICENSE)
 
 <!-- COMMUNITY BADGES -->
-[![Stars](https://img.shields.io/github/stars/Mido-ahmed586/cyberarcade?style=for-the-badge&color=FFD700&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/stargazers)
-[![Issues](https://img.shields.io/github/issues/Mido-ahmed586/cyberarcade?style=for-the-badge&color=red&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/issues)
-[![Contributors](https://img.shields.io/github/contributors/Mido-ahmed586/cyberarcade?style=for-the-badge&color=0A66C2&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/Mido-ahmed586/cyberarcade?style=flat-square&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/stargazers)
+[![Issues](https://img.shields.io/github/issues/Mido-ahmed586/cyberarcade?style=flat-square&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/issues)
+[![Contributors](https://img.shields.io/github/contributors/Mido-ahmed586/cyberarcade?style=flat-square&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/graphs/contributors)
 
 <br/>
 
