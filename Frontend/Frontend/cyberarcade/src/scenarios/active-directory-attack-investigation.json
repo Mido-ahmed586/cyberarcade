@@ -1,0 +1,69 @@
+{
+  "id": "active-directory-attack-investigation",
+  "order": 16,
+  "title": "Active Directory Attack Investigation",
+  "category": "Network Security",
+  "difficulty": "Hard",
+  "duration": "85 min",
+  "story": "An attacker compromised Active Directory credentials. Students investigate privilege escalation and lateral movement.",
+  "objectives": [
+    "Review Windows logs",
+    "Detect Kerberos abuse",
+    "Identify compromised accounts",
+    "Contain attacker"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Review Windows Logs",
+      "description": "Inspect Windows security logs for suspicious authentication and privilege events.",
+      "points": 25,
+      "hint": "Review events for logon, ticket requests, and privilege use.",
+      "validation": {
+        "type": "lateral_movement_detected",
+        "expected": "windows logs"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Detect Kerberos Abuse",
+      "description": "Identify evidence of Kerberos abuse such as unusual ticket activity.",
+      "points": 25,
+      "hint": "Look for abnormal TGS requests or service ticket patterns.",
+      "validation": {
+        "type": "lateral_movement_detected",
+        "expected": "kerberos"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Identify Compromised Accounts",
+      "description": "Determine which account was abused by the attacker.",
+      "points": 25,
+      "hint": "Correlate failed logons, successful logons, and privilege changes.",
+      "validation": {
+        "type": "account_identified",
+        "expected": "compromised account"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Contain Attacker",
+      "description": "Disable or reset compromised accounts and block active attacker access.",
+      "points": 25,
+      "hint": "Reset credentials, disable sessions, and review group memberships.",
+      "validation": {
+        "type": "account_identified",
+        "expected": "contained"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "mode": "partial",
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

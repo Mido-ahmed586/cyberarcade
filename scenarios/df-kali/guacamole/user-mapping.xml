@@ -1,0 +1,24 @@
+<user-mapping>
+    <authorize username="student" password="student123">
+        <connection name="Attacker Kali Terminal">
+            <protocol>ssh</protocol>
+            <param name="hostname">kali</param>
+            <param name="port">22</param>
+            <param name="username">student</param>
+            <param name="password">student123</param>
+
+            <!-- Terminal emulation — xterm-256color gives full keyboard/color support -->
+            <param name="terminal-type">xterm-256color</param>
+            <param name="scrollback">5000</param>
+            <param name="font-name">monospace</param>
+            <param name="font-size">14</param>
+
+            <!-- Clipboard: allow copy and paste -->
+            <param name="disable-copy">false</param>
+            <param name="disable-paste">false</param>
+
+            <!-- Encoding -->
+            <param name="clipboard-encoding">UTF-8</param>
+        </connection>
+    </authorize>
+</user-mapping>

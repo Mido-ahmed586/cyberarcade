@@ -1,0 +1,81 @@
+{
+  "id": "ransomware-incident-response",
+  "order": 14,
+  "title": "Ransomware Incident Response",
+  "category": "Network Security",
+  "difficulty": "Hard",
+  "duration": "80 min",
+  "story": "A ransomware attack has infected multiple systems. Students must contain the attack and begin recovery procedures.",
+  "objectives": [
+    "Identify infected host",
+    "Isolate system",
+    "Analyze indicators",
+    "Block spread",
+    "Restore services"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Identify Infected Host",
+      "description": "Determine which host shows ransomware activity.",
+      "points": 20,
+      "hint": "Look for encryption activity, ransom notes, or suspicious processes.",
+      "validation": {
+        "type": "host_isolated",
+        "expected": "infected host"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Isolate System",
+      "description": "Remove the infected host from the network.",
+      "points": 20,
+      "hint": "Use network controls to quarantine the host.",
+      "validation": {
+        "type": "host_isolated",
+        "expected": "isolated"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Analyze Indicators",
+      "description": "Collect indicators such as filenames, hashes, domains, and processes.",
+      "points": 20,
+      "hint": "Document artifacts linked to the ransomware.",
+      "validation": {
+        "type": "query_results",
+        "expected": "indicator"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Block Spread",
+      "description": "Prevent the ransomware from moving to additional systems.",
+      "points": 20,
+      "hint": "Block SMB, malicious IPs, or compromised credentials as needed.",
+      "validation": {
+        "type": "spread_prevented",
+        "expected": "blocked"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Restore Services",
+      "description": "Begin controlled restoration of affected services.",
+      "points": 20,
+      "hint": "Restore only after containment and verification.",
+      "validation": {
+        "type": "spread_prevented",
+        "expected": "restored"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "mode": "partial",
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

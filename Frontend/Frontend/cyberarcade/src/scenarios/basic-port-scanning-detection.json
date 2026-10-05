@@ -1,0 +1,80 @@
+{
+  "id": "basic-port-scanning-detection",
+  "order": 3,
+  "title": "Basic Port Scanning Detection",
+  "category": "Network Security",
+  "difficulty": "Easy",
+  "duration": "35 min",
+  "story": "An attacker is scanning the network using Nmap. Students must identify scanning activity from logs and understand reconnaissance techniques.",
+  "objectives": [
+    "Run packet capture",
+    "Analyze logs",
+    "Detect scan pattern",
+    "Identify attacker IP",
+    "Explain attack behavior"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Run Packet Capture",
+      "description": "Capture traffic on the monitored interface while the scan is occurring.",
+      "points": 20,
+      "hint": "Use tcpdump or tshark to capture packets.",
+      "validation": {
+        "type": "packet_detection",
+        "expected": "tcpdump"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Analyze Logs",
+      "description": "Review network logs for signs of repeated connection attempts.",
+      "points": 20,
+      "hint": "Look for many ports touched by the same source.",
+      "validation": {
+        "type": "log_analysis",
+        "expected": "scan"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Detect Scan Pattern",
+      "description": "Identify the behavior that indicates an Nmap-style port scan.",
+      "points": 20,
+      "hint": "A scanner often touches many ports in a short time window.",
+      "validation": {
+        "type": "packet_detection",
+        "expected": "multiple ports"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Identify Attacker IP",
+      "description": "Determine the source IP responsible for the scan.",
+      "points": 20,
+      "hint": "Group captured packets by source address.",
+      "validation": {
+        "type": "correct_ip",
+        "expected": "attacker"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Explain Attack Behavior",
+      "description": "Explain how the scan supports reconnaissance before an attack.",
+      "points": 20,
+      "hint": "Describe how open port discovery helps attackers plan next steps.",
+      "validation": {
+        "type": "log_analysis",
+        "expected": "reconnaissance"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

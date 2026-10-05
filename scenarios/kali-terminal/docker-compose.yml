@@ -1,0 +1,55 @@
+services:
+  attacker:
+    build: ./kali
+    container_name: cyber_attacker_kali
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      labnet:
+        ipv4_address: 172.30.0.20
+    ports:
+      - "2223:22"
+
+  defender:
+    build: ./target
+    container_name: cyber_defender_target
+    tty: true
+    stdin_open: true
+    networks:
+      labnet:
+        ipv4_address: 172.30.0.10
+    ports:
+      - "2224:22"
+
+  guacd:
+    image: guacamole/guacd:latest
+    container_name: cyber_terminal_guacd
+    networks:
+      - labnet
+
+  guacamole:
+    build:
+      context: .
+      dockerfile: Dockerfile.guacamole
+    container_name: cyber_terminal_guacamole
+    depends_on:
+      - guacd
+      - attacker
+      - defender
+    environment:
+      GUACD_HOSTNAME: guacd
+      GUACD_PORT: 4822
+    ports:
+      - "8081:8080"
+    networks:
+      - labnet
+
+networks:
+  labnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

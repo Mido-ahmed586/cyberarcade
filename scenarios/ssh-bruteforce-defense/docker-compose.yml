@@ -1,0 +1,25 @@
+services:
+  kali:
+    build: ./kali
+    container_name: cyber_kali
+    tty: true
+    stdin_open: true
+    networks:
+      labnet:
+        ipv4_address: 172.25.0.20
+
+  target:
+    build: ./target
+    container_name: cyber_target
+    networks:
+      labnet:
+        ipv4_address: 172.25.0.10
+    ports:
+      - "2222:22"
+
+networks:
+  labnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24

@@ -1,0 +1,68 @@
+{
+  "id": "arp-spoofing-mitm-attack",
+  "order": 11,
+  "title": "ARP Spoofing / MITM Attack",
+  "category": "Network Security",
+  "difficulty": "Medium",
+  "duration": "60 min",
+  "story": "An attacker performs ARP poisoning to intercept traffic. Students must identify and mitigate the attack.",
+  "objectives": [
+    "Detect duplicate ARP entries",
+    "Analyze traffic",
+    "Enable static ARP",
+    "Block attacker"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Detect Duplicate ARP Entries",
+      "description": "Find conflicting ARP mappings that indicate poisoning.",
+      "points": 25,
+      "hint": "Inspect arp -a or ip neigh output.",
+      "validation": {
+        "type": "arp_check",
+        "expected": "duplicate"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Analyze Traffic",
+      "description": "Review captured traffic for signs of interception.",
+      "points": 25,
+      "hint": "Look for gratuitous ARP or repeated ARP replies.",
+      "validation": {
+        "type": "arp_check",
+        "expected": "poisoning"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Enable Static ARP",
+      "description": "Pin the trusted gateway MAC address to reduce spoofing risk.",
+      "points": 25,
+      "hint": "Use ip neigh replace or arp -s.",
+      "validation": {
+        "type": "attack_blocked",
+        "expected": "static arp"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Block Attacker",
+      "description": "Prevent the attacker's traffic from reaching the host.",
+      "points": 25,
+      "hint": "Use firewall or switch controls to block the attacker.",
+      "validation": {
+        "type": "attack_blocked",
+        "expected": "blocked"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

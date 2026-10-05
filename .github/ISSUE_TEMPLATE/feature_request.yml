@@ -1,0 +1,80 @@
+name: Feature Request
+description: Suggest a new feature or improvement for CyberArcade
+title: "[Feature]: "
+labels: ["enhancement", "needs-discussion"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting an improvement to CyberArcade. Please describe the problem you want to solve before proposing a solution — this helps us evaluate whether the feature fits the platform's direction.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Feature Area
+      multiple: false
+      options:
+        - Lab Scenarios / Docker Environments
+        - Learning Experience (courses, tasks, hints)
+        - AI Coach / Assistant
+        - Instructor Tools
+        - Admin / Management
+        - Gamification (XP, badges, leaderboard)
+        - API / Integration
+        - Infrastructure / Deployment
+        - UI / UX
+        - Security
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What is currently frustrating or missing?
+      placeholder: As a student, I find it difficult to... / As an instructor, I cannot currently...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed feature. How should it work from the user's perspective?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative approaches or workarounds?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: How important is this to you?
+      options:
+        - Nice to have
+        - Would significantly improve my workflow
+        - Blocking — I cannot use the platform effectively without this
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Mockups, examples from other platforms, links, or any other context.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: This feature is within scope of a cybersecurity training platform
+          required: true

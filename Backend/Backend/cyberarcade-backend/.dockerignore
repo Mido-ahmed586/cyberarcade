@@ -1,0 +1,34 @@
+# Virtual environments — these are machine-specific and must NOT go into the image
+venv/
+.venv/
+venv_new/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment files — secrets must never be baked into the image
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Test artefacts
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Misc
+*.log
+*.egg-info/
+dist/
+build/

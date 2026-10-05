@@ -1,0 +1,520 @@
+[
+  {
+    "course_id": "24fa67b2-f0e5-4148-a242-9f9e5fb92119",
+    "title": "Metasploit & Metasploitable Penetration Testing",
+    "description": "Learn penetration testing fundamentals using the Metasploit Framework against the intentionally vulnerable Metasploitable2 target. Covers network reconnaissance with Nmap, service enumeration, vulnerability identification, and exploitation using real Metasploit modules \u00e2\u20ac\u201d all inside a safe, isolated Docker lab environment.",
+    "difficulty_level": "intermediate",
+    "category": "Penetration Testing",
+    "estimated_hours": 8.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "fbad92f0-7f33-4445-adc8-9515c6864b68",
+        "title": "Penetration Testing Concepts",
+        "description": "Before touching any tools, understand the fundamentals: CVE, CVSS, penetration testing methodology, and the Metasploit command structure. No live machine required \u00e2\u20ac\u201d theory only.",
+        "difficulty": "beginner",
+        "docker_compose_config": {},
+        "has_auto_solve": false,
+        "max_duration_minutes": 120,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "8468dee3-77a8-43f7-a275-81511819292e",
+            "title": "What does CVE stand for?",
+            "instructions": "**Common Vulnerabilities and Exposures (CVE)** is the global standard for identifying and naming publicly known cybersecurity vulnerabilities.\n\nEach CVE entry has a unique ID in the format **CVE-YEAR-NUMBER** (e.g., `CVE-2021-44228` is the famous Log4Shell vulnerability). The list is maintained by **MITRE Corporation** and is used by security tools, vulnerability scanners, and patch management systems worldwide.\n\nWhen a researcher discovers a vulnerability, they request a CVE ID so the community can track it consistently \u00e2\u20ac\u201d the same vulnerability gets the same name regardless of which vendor or tool refers to it.\n\n> **Famous examples:** CVE-2017-0144 (EternalBlue / WannaCry), CVE-2021-44228 (Log4Shell), CVE-2014-0160 (Heartbleed)\n\nWhat does the acronym **CVE** stand for?",
+            "expected_answer": "Common Vulnerabilities and Exposures",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "46b024ff-cdac-45ed-a04e-f439847a34fa",
+                "hint_text": "CVE is maintained by MITRE Corporation.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "9c387e47-666c-4836-8231-f21a3fd2a1ff",
+                "hint_text": "Three words: Common, Vulnerabilities, and Exposures.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "ce3a9a3b-c73d-4526-8852-b40957d1abbe",
+            "title": "What is the first phase of a penetration test?",
+            "instructions": "A penetration test follows a structured methodology with distinct phases. Understanding the order matters \u00e2\u20ac\u201d skipping phases leads to missed vulnerabilities or noisy attacks that get detected.\n\n**The five phases of a penetration test:**\n\n1. **Reconnaissance** \u00e2\u20ac\u201d Gather information about the target (passive and active)\n2. **Scanning & Enumeration** \u00e2\u20ac\u201d Discover open ports, services, and versions\n3. **Exploitation** \u00e2\u20ac\u201d Leverage vulnerabilities to gain access\n4. **Post-Exploitation** \u00e2\u20ac\u201d Escalate privileges, pivot, maintain persistence\n5. **Reporting** \u00e2\u20ac\u201d Document findings and remediation steps\n\nThe very first phase is passive \u00e2\u20ac\u201d you collect publicly available information without directly touching the target. This includes WHOIS lookups, DNS enumeration, LinkedIn profiling, and more.\n\nWhat is the **first phase** of a penetration test?",
+            "expected_answer": "reconnaissance",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "f26f51eb-47b5-43a3-9ac0-c0877e91a8e0",
+                "hint_text": "This phase is also called 'information gathering' or 'footprinting'.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "3e1b683c-262b-44de-8ebd-9ff431c7e94a",
+                "hint_text": "The term starts with the letter R.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "c09848dc-a675-4320-93da-805672da879c",
+            "title": "What is the default port for MySQL?",
+            "instructions": "Every network service listens on a **port number** \u00e2\u20ac\u201d a 16-bit number (0\u00e2\u20ac\u201c65535) that identifies which service should handle incoming traffic. Knowing default ports is essential for both attackers and defenders.\n\n**Common default ports you must know:**\n\n| Port | Service |\n|------|---------|\n| 21   | FTP     |\n| 22   | SSH     |\n| 80   | HTTP    |\n| 443  | HTTPS   |\n| 3306 | ?       |\n| 5432 | PostgreSQL |\n| 27017 | MongoDB |\n\nMetasploitable2 exposes many of these. During our Nmap lab you will see them all.\n\nWhat is the **default TCP port** for MySQL?",
+            "expected_answer": "3306",
+            "autosolve_commands": [],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "c0959875-7631-45ec-b20c-f31e1c67b114",
+                "hint_text": "The port number is between 3000 and 4000.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "02a19e53-088e-4105-889f-06e967d373a2",
+            "title": "What Metasploit command searches for modules?",
+            "instructions": "**Metasploit Framework** is the world's most widely used penetration testing platform. Its interactive console, `msfconsole`, gives you access to thousands of exploits, payloads, auxiliary scanners, and post-exploitation modules.\n\n**The basic Metasploit workflow:**\n\n```\nmsfconsole          # start the console\nsearch <keyword>    # find modules\nuse <module_path>   # select a module\ninfo                # read module details\nset RHOSTS <ip>     # configure the target\nset LHOST <ip>      # configure your listener\nrun                 # launch the exploit\n```\n\nBefore you can exploit anything you need to find the right module. Metasploit has over 2,000 exploits \u00e2\u20ac\u201d the `search` command filters them by keyword, CVE ID, or platform.\n\n**Example:** `search unreal_ircd` will find the UnrealIRCd backdoor exploit we will use later in this course.\n\nWhat single-word msfconsole command do you use to **search for modules**?",
+            "expected_answer": "search",
+            "autosolve_commands": [],
+            "sort_order": 4,
+            "hints": [
+              {
+                "hint_id": "8a8d0fb8-1602-4b57-a0f6-dce9679d88de",
+                "hint_text": "It's the same word you type into Google every day.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "0f50aee3-2e9b-422f-9d64-735712c02811",
+            "title": "What does CVSS stand for?",
+            "instructions": "Knowing a vulnerability exists is only half the story \u00e2\u20ac\u201d you also need to understand **how severe** it is. That's what **CVSS** (Common Vulnerability Scoring System) is for.\n\nCVSS rates vulnerabilities on a **0.0 \u00e2\u20ac\u201c 10.0 scale** based on factors like:\n- **Attack Vector** \u00e2\u20ac\u201d Network, adjacent, local, or physical?\n- **Attack Complexity** \u00e2\u20ac\u201d Is it easy or hard to exploit?\n- **Privileges Required** \u00e2\u20ac\u201d Does the attacker need existing credentials?\n- **Impact** \u00e2\u20ac\u201d How badly is confidentiality, integrity, or availability affected?\n\n**CVSS severity ranges:**\n\n| Score   | Severity |\n|---------|----------|\n| 0.0     | None     |\n| 0.1\u00e2\u20ac\u201c3.9 | Low      |\n| 4.0\u00e2\u20ac\u201c6.9 | Medium   |\n| 7.0\u00e2\u20ac\u201c8.9 | High     |\n| 9.0\u00e2\u20ac\u201c10.0 | **Critical** |\n\nThe vulnerabilities in Metasploitable2 include several **Critical (9.0+)** CVEs \u00e2\u20ac\u201d you will exploit two of them in this course.\n\nWhat does **CVSS** stand for?",
+            "expected_answer": "Common Vulnerability Scoring System",
+            "autosolve_commands": [],
+            "sort_order": 5,
+            "hints": [
+              {
+                "hint_id": "851ee584-5ec3-4e02-b840-3979c22fee2b",
+                "hint_text": "CVSS scores of 9\u00e2\u20ac\u201c10 are labelled 'Critical'.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "dd36033b-c3a0-4892-8d6d-0a07d11ebc11",
+                "hint_text": "Four words: Common, Vulnerability, Scoring, System.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "21fc0228-1fb6-4472-bc47-edd4098dcff0",
+        "title": "Network Reconnaissance with Nmap",
+        "description": "Launch Nmap against Metasploitable2 to discover all open ports and identify running services with version detection. This is the reconnaissance phase of a real penetration test.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "runtime_slug": "metasploit",
+          "terminal_type": "single"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 2,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "93ef3d98-bd1c-4fb8-9d74-c899ede78f8a",
+            "title": "How many open TCP ports does Metasploitable2 have?",
+            "instructions": "**Nmap** (Network Mapper) is the most widely used port scanner in the world. It discovers live hosts, open ports, running services, and operating systems across a network.\n\n**Launch your terminal** by clicking **Launch Machine** below, then try your first scan:\n\n```\nnmap --open -T4 metasploitable2\n```\n\n**What these flags mean:**\n- `--open` \u00e2\u20ac\u201d only show ports that are open (filters out closed/filtered)\n- `-T4` \u00e2\u20ac\u201d aggressive timing (faster scan, fine in a lab)\n- `metasploitable2` \u00e2\u20ac\u201d the target hostname (resolvable inside this lab network)\n\nYou should see a list of open TCP ports. Count them up \u00e2\u20ac\u201d Metasploitable2 is intentionally vulnerable and exposes many services.\n\n**How many open TCP ports** does the default Nmap scan find?",
+            "expected_answer": "11",
+            "autosolve_commands": [
+              "nmap --open -T4 metasploitable2 2>/dev/null",
+              "nmap --open -T4 metasploitable2 2>/dev/null | grep -c '^[0-9]*/tcp'"
+            ],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "3a41c80f-bdf8-4708-951f-99be5c53ad56",
+                "hint_text": "Use the `--open` flag so only open ports are shown.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "38931084-bb73-4252-a289-b332feba5b2d",
+                "hint_text": "Pipe through `grep -c '^[0-9]*/tcp'` to count the lines automatically.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "54e8b588-13d2-4dd7-bc96-91414ceec92b",
+            "title": "What SSH version is running on port 22?",
+            "instructions": "A basic port scan tells you which ports are open, but not what software is running on them. The **`-sV` flag** (service version detection) makes Nmap probe each open port and identify the exact software and version.\n\nRun this command in your terminal:\n\n```\nnmap -sV -p 22 metasploitable2\n```\n\n**What `-sV -p 22` means:**\n- `-sV` \u00e2\u20ac\u201d enable service/version detection\n- `-p 22` \u00e2\u20ac\u201d scan only port 22 (SSH)\n\nIn the output, look for a line like:\n```\n22/tcp  open  ssh   <software> <version>\n```\n\nKnowing the exact SSH version is important \u00e2\u20ac\u201d older versions have known exploits. For example, **OpenSSH 4.7** was released in 2007 and has several vulnerabilities.\n\nWhat is the **SSH software and version** running on port 22? (format: `OpenSSH X.Yp1`)",
+            "expected_answer": "OpenSSH 4.7p1",
+            "autosolve_commands": [
+              "nmap -sV -p 22 metasploitable2 2>/dev/null | grep '22/tcp'",
+              "nmap -sV -p 22 metasploitable2 2>/dev/null | grep -oP 'OpenSSH [0-9.p]+'"
+            ],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "ef0d8a79-367b-476a-8c8c-badc5555fa9c",
+                "hint_text": "Use `nmap -sV -p 22 metasploitable2` to scan just port 22.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "1faf0914-501f-4d57-81ea-64a85d0f43e3",
+                "hint_text": "The answer format is 'OpenSSH X.Yp1' \u00e2\u20ac\u201d include the 'p1' suffix.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "aba41a08-0c0f-4fbd-bdfc-94c4b2098e08",
+            "title": "What web server is running on port 80?",
+            "instructions": "Port 80 is the default port for HTTP (unencrypted web traffic). Identifying the web server software and version is a key step \u00e2\u20ac\u201d different versions have different vulnerabilities.\n\nRun:\n```\nnmap -sV -p 80 metasploitable2\n```\n\nIn the output, look for the `80/tcp` line. The web server name and version will appear after the protocol label.\n\n**Why this matters:** Apache httpd 2.2.8 was released in 2008. Older Apache versions can be vulnerable to path traversal, buffer overflows, and configuration weaknesses. Metasploitable2 intentionally runs old, vulnerable software.\n\nWhat is the **web server software and version** on port 80? (format: `Apache httpd X.Y.Z`)",
+            "expected_answer": "Apache httpd 2.2.8",
+            "autosolve_commands": [
+              "nmap -sV -p 80 metasploitable2 2>/dev/null | grep '80/tcp'",
+              "nmap -sV -p 80 metasploitable2 2>/dev/null | grep -oP 'Apache httpd [0-9.]+'"
+            ],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "bd714030-e24a-4727-8207-049f725b8f5a",
+                "hint_text": "Use `nmap -sV -p 80 metasploitable2` to scan port 80.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "9fd96d4c-90c9-4c59-83ef-f55710d5893a",
+                "hint_text": "The answer starts with 'Apache httpd' followed by the version number.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "78e04d23-34f4-4d6d-929c-62dada22ad4c",
+            "title": "What MySQL version is running on port 3306?",
+            "instructions": "Now scan the database port. MySQL is one of the most common database servers, and knowing its version helps identify applicable exploits.\n\n```\nnmap -sV -p 3306 metasploitable2\n```\n\nLook for the `3306/tcp` line. You will see the MySQL version reported by Nmap's service probes.\n\n**Why this matters:** MySQL 5.0.x has several known vulnerabilities including privilege escalation and information disclosure issues. In real engagements, a discovered database port is always a high-priority target.\n\nWhat is the **MySQL version** on port 3306? (format: `MySQL X.Y.ZZ`)",
+            "expected_answer": "MySQL 5.0.51a",
+            "autosolve_commands": [
+              "nmap -sV -p 3306 metasploitable2 2>/dev/null | grep '3306/tcp'",
+              "nmap -sV -p 3306 metasploitable2 2>/dev/null | grep -oP 'MySQL [0-9.a]+'"
+            ],
+            "sort_order": 4,
+            "hints": [
+              {
+                "hint_id": "cb00aef4-c141-4db7-bbe3-ea8fea7b307c",
+                "hint_text": "Use `nmap -sV -p 3306 metasploitable2`.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "84f99409-3702-4d13-b2f8-00e4f8d75034",
+                "hint_text": "The version starts with `5.0` and has a letter suffix.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "92fb8bdc-a9d6-4d53-aa50-18b5dfaecdae",
+            "title": "What IRC service is running on port 6667?",
+            "instructions": "Port 6667 is the default port for **IRC (Internet Relay Chat)** \u00e2\u20ac\u201d a protocol from the 1980s still used today. Metasploitable2 runs a specific IRC server on this port that contains a **critical backdoor vulnerability** (CVE-2010-2075).\n\nScan it:\n```\nnmap -sV -p 6667 metasploitable2\n```\n\nLook for the service name on the `6667/tcp` line.\n\n**Background:** In 2009, an attacker compromised the UnrealIRCd source code distribution server and inserted a backdoor. Anyone who downloaded that version unknowingly ran malicious code. This is called a **supply-chain attack** \u00e2\u20ac\u201d the software itself was weaponised before distribution.\n\nWe will exploit this backdoor in a later lab using Metasploit's `exploit/unix/irc/unreal_ircd_3281_backdoor` module.\n\nWhat is the **IRC service name** running on port 6667?",
+            "expected_answer": "UnrealIRCd",
+            "autosolve_commands": [
+              "nmap -sV -p 6667 metasploitable2 2>/dev/null | grep '6667/tcp'",
+              "nmap -sV -p 6667 metasploitable2 2>/dev/null | grep -oP 'UnrealIRCd'"
+            ],
+            "sort_order": 5,
+            "hints": [
+              {
+                "hint_id": "4bdddaad-cc6c-4e50-aea9-a02b2dab2882",
+                "hint_text": "The service has a known backdoor vulnerability (CVE-2010-2075).",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "7e98253c-a2e2-4708-b092-5cc0e9a9cda9",
+                "hint_text": "The answer is a single word.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "2fc905c9-6ea7-4f0b-98cd-14173790a5a3",
+        "title": "Service Enumeration & Banner Grabbing",
+        "description": "Go deeper into discovered services using curl and Nmap banner grabbing to extract PHP version, web titles, VNC protocol, Samba version, and identify exploitable vulnerabilities.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "runtime_slug": "metasploit",
+          "terminal_type": "single"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 3,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "4a3e3aa0-b488-4c42-af1b-0488f0384a94",
+            "title": "What PHP version is the web server running?",
+            "instructions": "HTTP response headers often leak server-side technology information \u00e2\u20ac\u201d a goldmine for attackers during enumeration. The `curl -I` command fetches **only the headers** (no body), quickly revealing web server details.\n\nRun in your terminal:\n```\ncurl -s -I http://metasploitable2/\n```\n\nScan through the headers. You are looking for the **`X-Powered-By`** header, which web applications use to advertise the scripting language they run on.\n\n**Example header output:**\n```\nHTTP/1.1 200 OK\nServer: Apache/2.2.8 (Ubuntu)\nX-Powered-By: PHP/x.x.x\n```\n\nWhat is the **full value** of the `X-Powered-By` header? (format: `PHP/X.Y.Z-...`)",
+            "expected_answer": "PHP/5.2.4-2ubuntu5.10",
+            "autosolve_commands": [
+              "curl -s -I http://metasploitable2/ 2>/dev/null | grep -i 'X-Powered-By'",
+              "curl -s -I http://metasploitable2/ 2>/dev/null | grep -oP 'PHP/[0-9.\\-a-z]+'"
+            ],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "b1e642b1-22fe-4c12-b83d-35018791765b",
+                "hint_text": "Use `curl -I http://metasploitable2/` to fetch HTTP headers only.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "0de1ad87-dca7-4773-9eeb-10cc75cc0fff",
+                "hint_text": "Look for the `X-Powered-By` header \u00e2\u20ac\u201d it contains the PHP version.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "4cfc424c-dd46-43b8-a89e-005252a1c988",
+            "title": "What is the title of the Metasploitable2 web page?",
+            "instructions": "The HTML `<title>` tag contains the page title shown in the browser tab. For enumeration, it confirms you've reached the right target and can reveal application names or environments.\n\nFetch the page source and extract the title:\n```\ncurl -s http://metasploitable2/ | grep -oP '(?<=<title>)[^<]+'\n```\n\n**What this command does:**\n- `curl -s http://metasploitable2/` \u00e2\u20ac\u201d silently fetch the HTML\n- `grep -oP '(?<=<title>)[^<]+'` \u00e2\u20ac\u201d extract only the text between `<title>` and `</title>`\n\nWhat is the **exact page title** of the Metasploitable2 default web page?",
+            "expected_answer": "Metasploitable2 - Linux",
+            "autosolve_commands": [
+              "curl -s http://metasploitable2/ 2>/dev/null | grep -oP '(?<=<title>)[^<]+'"
+            ],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "9583c1b6-b48d-4e04-87d3-e67467830594",
+                "hint_text": "Use `curl -s http://metasploitable2/` to get the page source.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "c196d574-89db-47fc-a5f1-df199644b34f",
+                "hint_text": "The title is inside an HTML `<title>` tag.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "03677371-6677-4f53-a313-f8ea81fee62e",
+            "title": "What VNC protocol version is running on port 5900?",
+            "instructions": "**VNC (Virtual Network Computing)** enables remote desktop access. Port 5900 is the standard VNC port. If VNC is exposed without authentication (or with a weak password), an attacker can take full graphical control of the machine.\n\nScan it with Nmap:\n```\nnmap -sV -p 5900 metasploitable2\n```\n\nThe output will identify the VNC software and the **protocol version** it supports. Older protocol versions (like 3.3) offer weaker security.\n\nWhat is the VNC service description on port 5900? (format: `VNC (protocol X.X)`)",
+            "expected_answer": "VNC (protocol 3.3)",
+            "autosolve_commands": [
+              "nmap -sV -p 5900 metasploitable2 2>/dev/null | grep '5900/tcp'",
+              "nmap -sV -p 5900 metasploitable2 2>/dev/null | grep -oP 'VNC \\(protocol [0-9.]+\\)'"
+            ],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "a2fffe76-ded1-40e8-9fd2-bebf32bb8a33",
+                "hint_text": "Use `nmap -sV -p 5900 metasploitable2`.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "7c5b6877-f63e-4e1b-845b-ce3e398f3af2",
+                "hint_text": "The answer includes 'protocol' in parentheses \u00e2\u20ac\u201d e.g., `VNC (protocol X.X)`.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "e88533cb-8e46-4113-a7ec-1ddec0107162",
+            "title": "What Samba version range is advertised on port 445?",
+            "instructions": "**Samba** implements the SMB (Server Message Block) protocol on Linux, allowing Windows-style file and printer sharing. Port 445 is the primary SMB port.\n\nMetasploitable2 runs an ancient version of Samba that is vulnerable to **CVE-2007-2447**, a critical remote code execution vulnerability known as the **\"username map script\"** exploit \u00e2\u20ac\u201d one of the easiest exploits in Metasploit.\n\nScan port 445:\n```\nnmap -sV -p 445 metasploitable2\n```\n\nNmap will report a version range for the Samba service on this port.\n\nWhat is the **Samba version range** reported by Nmap? (format: `Samba smbd X.X - Y.Y`)",
+            "expected_answer": "Samba smbd 3.X - 4.X",
+            "autosolve_commands": [
+              "nmap -sV -p 445 metasploitable2 2>/dev/null | grep '445/tcp'",
+              "nmap -sV -p 445 metasploitable2 2>/dev/null | grep -oP 'Samba smbd [0-9X. -]+'"
+            ],
+            "sort_order": 4,
+            "hints": [
+              {
+                "hint_id": "c9835bce-21df-433f-b794-d2e6e23806a2",
+                "hint_text": "Use `nmap -sV -p 445 metasploitable2`.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "d146d61e-7455-474d-9993-42a105908cd6",
+                "hint_text": "The answer is in the format `Samba smbd X.X - Y.Y` using 'X' for the major version placeholders.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "d0454b4a-c90c-4f76-a785-f44ace0628d6",
+            "title": "What type of vulnerability affects UnrealIRCd on Metasploitable2?",
+            "instructions": "Now that you have identified UnrealIRCd on port 6667, let's understand the vulnerability.\n\n**CVE-2010-2075** is a supply-chain attack: in 2009, an attacker compromised the UnrealIRCd distribution server and inserted malicious code into the source tarball. The backdoor allows **remote command execution** \u00e2\u20ac\u201d an attacker can send a specially crafted string to port 6667 that triggers the execution of arbitrary OS commands with the privileges of the IRC server process.\n\n**Attack flow:**\n1. Connect to port 6667\n2. Send: `AB;` followed by a shell command\n3. The backdoor executes the command on the server\n\nThis vulnerability has a Metasploit module (`exploit/unix/irc/unreal_ircd_3281_backdoor`) that automates the entire attack. You will use it in the next lab.\n\nWhat type of vulnerability is CVE-2010-2075 classified as? Enter: **backdoor command execution**",
+            "expected_answer": "backdoor command execution",
+            "autosolve_commands": [],
+            "sort_order": 5,
+            "hints": [
+              {
+                "hint_id": "4ff66940-0c0c-4bc4-a069-7d52fba4bf45",
+                "hint_text": "This was a supply-chain attack \u00e2\u20ac\u201d malicious code was inserted into a legitimate release.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "3ffd1bac-b3e2-43b0-9ca2-a00168093591",
+                "hint_text": "The answer is three words describing what the backdoor does.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "29fe0823-2269-4b94-8c60-fe1160349b2c",
+        "title": "Exploitation with Metasploit",
+        "description": "Learn the Metasploit workflow: search, use, set, info, run. Identify the exact exploit modules for UnrealIRCd (CVE-2010-2075) and Samba (CVE-2007-2447) ready to fire in your next session.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "runtime_slug": "metasploit",
+          "terminal_type": "single"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 4,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "84544ff7-a125-4aac-9a6f-967d210ca7aa",
+            "title": "What is the msfconsole command to select a module?",
+            "instructions": "You have identified two critical vulnerabilities on Metasploitable2:\n- **CVE-2010-2075** \u00e2\u20ac\u201d UnrealIRCd backdoor (port 6667)\n- **CVE-2007-2447** \u00e2\u20ac\u201d Samba username map script (port 445)\n\nNow it's time to exploit them using **Metasploit**.\n\n**The core Metasploit workflow:**\n\n```\n# 1. Search for the module\nsearch unreal_ircd\n\n# 2. Select it\nuse exploit/unix/irc/unreal_ircd_3281_backdoor\n\n# 3. Configure it\nset RHOSTS metasploitable2\nset LHOST <your IP>\n\n# 4. Verify options\nshow options\n\n# 5. Launch\nrun\n```\n\nThe command used in **step 2** \u00e2\u20ac\u201d selecting a module \u00e2\u20ac\u201d is a single word followed by the full module path.\n\nWhat is the **msfconsole command** used to select a module? (single word)",
+            "expected_answer": "use",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "d8f469c9-77c8-47dd-94b9-1a7fcb4795dc",
+                "hint_text": "After this command you type the full module path, e.g. `use exploit/unix/irc/unreal_ircd_3281_backdoor`.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "5d41208b-811c-482d-8ee5-c623158259ba",
+            "title": "What Metasploit option sets the target IP?",
+            "instructions": "Every Metasploit exploit requires at minimum two pieces of information: the **target** (remote host) and your **listener** (local host). These are set as module options.\n\n**Key options in most exploits:**\n\n| Option   | Meaning                        |\n|----------|-------------------------------|\n| `RHOSTS` | Remote host(s) \u00e2\u20ac\u201d the target   |\n| `RPORT`  | Remote port \u00e2\u20ac\u201d target's port   |\n| `LHOST`  | Local host \u00e2\u20ac\u201d your IP          |\n| `LPORT`  | Local port \u00e2\u20ac\u201d your listener    |\n\nYou configure these with `set <OPTION> <value>`:\n```\nset RHOSTS metasploitable2\nset LHOST 0.0.0.0\n```\n\nAfter setting options you can verify them with `show options` \u00e2\u20ac\u201d this lists required and optional settings and whether they are configured.\n\nWhat is the **option name** used to specify the **target IP address**?",
+            "expected_answer": "RHOSTS",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "a6b28622-d5db-4628-af81-969fe45bb192",
+                "hint_text": "The option name starts with R (for Remote).",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "8effdd82-d155-4c24-9204-8c4e3389a5d0",
+                "hint_text": "LHOST is your attacker IP; the *remote* host option starts with RH.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "6c917292-544e-4ce4-9182-cdd5e40227dd",
+            "title": "What msfconsole command shows module details?",
+            "instructions": "Before running an exploit it is good practice to read its documentation. Metasploit includes detailed information for every module including:\n- A description of the vulnerability it exploits\n- The CVE references\n- Required and optional options\n- Author and reliability rating\n\nYou access this with a single-word command inside msfconsole (after selecting a module with `use`):\n\n```\nuse exploit/unix/irc/unreal_ircd_3281_backdoor\ninfo\n```\n\nThe output will show you everything about the module \u00e2\u20ac\u201d including that this exploit targets **CVE-2010-2075** and reliably gives a shell on the target.\n\nWhat single-word msfconsole command **shows detailed module information**?",
+            "expected_answer": "info",
+            "autosolve_commands": [],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "742b29d6-b36c-4e2e-a773-ee436b6908f4",
+                "hint_text": "It's a common English word meaning 'information'.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "c0b2b27d-2592-44e4-8d9d-2783e145a9e5",
+            "title": "What Metasploit module exploits the UnrealIRCd backdoor?",
+            "instructions": "Now search for the UnrealIRCd exploit module. Inside msfconsole, run:\n\n```\nsearch unreal_ircd\n```\n\nYou will see a table of matching modules. Find the **exploit** module (not auxiliary or post) that targets the UnrealIRCd backdoor. The module path follows the Metasploit naming convention:\n\n```\n<type>/<platform>/<service>/<module_name>\n```\n\nFor example: `exploit/unix/irc/<name>`\n\n**Auto-Solve note:** The auto-solve will run this search in your terminal and extract the module path automatically.\n\nWhat is the **full module path** for the UnrealIRCd backdoor exploit?",
+            "expected_answer": "exploit/unix/irc/unreal_ircd_3281_backdoor",
+            "autosolve_commands": [
+              "msfconsole -q -x 'search unreal_ircd; exit' 2>/dev/null | grep unreal_ircd | grep exploit | awk '{print $2}'"
+            ],
+            "sort_order": 4,
+            "hints": [
+              {
+                "hint_id": "e1587464-8d6d-4fe0-be7c-137f925a259b",
+                "hint_text": "Run `search unreal_ircd` inside msfconsole.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "52eb4a87-46ea-4bba-8926-59d4dd282ff5",
+                "hint_text": "The module path follows: `exploit/unix/irc/<name>`.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "68013bb2-0c63-4f77-8ef3-b5e379039a82",
+            "title": "What Metasploit module exploits the Samba vulnerability?",
+            "instructions": "The second critical vulnerability is in Samba \u00e2\u20ac\u201d **CVE-2007-2447**, known as the \"username map script\" vulnerability. It allows unauthenticated remote code execution by injecting shell commands into the Samba username field.\n\nSearch for it in msfconsole:\n```\nsearch usermap_script\n```\n\nFind the **exploit** module in the results. The module path follows the pattern:\n```\nexploit/multi/samba/<name>\n```\n\nOnce you find it, you can exploit Metasploitable2's Samba service with just three commands:\n```\nuse exploit/multi/samba/usermap_script\nset RHOSTS metasploitable2\nrun\n```\n\nThis gives you a **root shell** \u00e2\u20ac\u201d no password required. That's the power (and danger) of unpatched, vulnerable services.\n\nWhat is the **full module path** for the Samba usermap_script exploit?",
+            "expected_answer": "exploit/multi/samba/usermap_script",
+            "autosolve_commands": [
+              "msfconsole -q -x 'search usermap_script; exit' 2>/dev/null | grep usermap_script | grep exploit | awk '{print $2}'"
+            ],
+            "sort_order": 5,
+            "hints": [
+              {
+                "hint_id": "05e54684-ef14-4eaa-a448-69d22c36ef70",
+                "hint_text": "Run `search usermap_script` inside msfconsole.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "fe0e123b-788a-4ea5-b4c4-5df12fa1c062",
+                "hint_text": "The module path starts with `exploit/multi/samba/`.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

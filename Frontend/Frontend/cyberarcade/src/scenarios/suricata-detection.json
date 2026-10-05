@@ -1,0 +1,80 @@
+{
+  "id": "suricata-detection",
+  "order": 6,
+  "title": "Suricata IDS Detection",
+  "category": "Network Security",
+  "difficulty": "Medium",
+  "duration": "60 min",
+  "story": "A server is generating suspicious traffic. Students must deploy Suricata, inspect alerts, and identify malicious activity.",
+  "objectives": [
+    "Start Suricata",
+    "Analyze fast.log",
+    "Trigger IDS alert",
+    "Explain Suricata rule",
+    "Detect malicious traffic"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Start Suricata",
+      "description": "Start the Suricata IDS service and confirm it is running.",
+      "points": 20,
+      "hint": "Use systemctl or service controls to start suricata.",
+      "validation": {
+        "type": "service_running",
+        "expected": "suricata"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Analyze fast.log",
+      "description": "Open the Suricata fast.log file and inspect recent alerts.",
+      "points": 20,
+      "hint": "Check /var/log/suricata/fast.log.",
+      "validation": {
+        "type": "log_contains",
+        "expected": "fast.log"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Trigger IDS Alert",
+      "description": "Generate traffic that causes Suricata to emit an alert.",
+      "points": 20,
+      "hint": "Use a known test alert pattern or suspicious traffic sample.",
+      "validation": {
+        "type": "alert_detected",
+        "expected": "alert"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Explain Suricata Rule",
+      "description": "Explain what the Suricata rule detects and why it indicates malicious behavior.",
+      "points": 20,
+      "hint": "Mention the signature, traffic pattern, and security impact.",
+      "validation": {
+        "type": "answer_validation",
+        "expected": "signature"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Detect Malicious Traffic",
+      "description": "Identify the malicious traffic source or signature from the alert data.",
+      "points": 20,
+      "hint": "Look for the alert signature and source address in fast.log.",
+      "validation": {
+        "type": "alert_detected",
+        "expected": "malicious"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

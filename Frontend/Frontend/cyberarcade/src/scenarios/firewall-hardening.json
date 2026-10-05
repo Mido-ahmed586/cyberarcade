@@ -1,0 +1,80 @@
+{
+  "id": "firewall-hardening",
+  "order": 2,
+  "title": "Firewall Hardening",
+  "category": "Network Security",
+  "difficulty": "Easy",
+  "duration": "40 min",
+  "story": "A vulnerable server exposes insecure services. Students must configure UFW firewall rules to secure the system while maintaining SSH access.",
+  "objectives": [
+    "Run Nmap scan",
+    "Enable UFW",
+    "Allow SSH",
+    "Block Telnet",
+    "Verify firewall status"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Run Nmap Scan",
+      "description": "Scan the target to identify exposed services before applying firewall rules.",
+      "points": 20,
+      "hint": "Use nmap against the target machine.",
+      "validation": {
+        "type": "command",
+        "expected": "nmap"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Enable UFW",
+      "description": "Enable the uncomplicated firewall on the target server.",
+      "points": 20,
+      "hint": "Use ufw enable.",
+      "validation": {
+        "type": "ufw_status",
+        "expected": "Status: active"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Allow SSH",
+      "description": "Add a firewall rule that allows SSH traffic so administrators keep access.",
+      "points": 20,
+      "hint": "Allow port 22 or the SSH service profile.",
+      "validation": {
+        "type": "ssh_accessible",
+        "expected": "22"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Block Telnet",
+      "description": "Deny inbound Telnet traffic on port 23.",
+      "points": 20,
+      "hint": "Use ufw deny 23.",
+      "validation": {
+        "type": "port_closed",
+        "expected": "23"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Verify Firewall Status",
+      "description": "List active firewall rules and confirm SSH is allowed while Telnet is denied.",
+      "points": 20,
+      "hint": "Check ufw status numbered.",
+      "validation": {
+        "type": "ufw_status",
+        "expected": "Status: active"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

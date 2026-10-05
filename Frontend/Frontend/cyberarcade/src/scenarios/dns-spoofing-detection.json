@@ -1,0 +1,68 @@
+{
+  "id": "dns-spoofing-detection",
+  "order": 10,
+  "title": "DNS Spoofing Detection",
+  "category": "Network Security",
+  "difficulty": "Medium",
+  "duration": "55 min",
+  "story": "The network is under DNS spoofing attack. Students investigate DNS responses and identify manipulated traffic.",
+  "objectives": [
+    "Capture DNS traffic",
+    "Compare legitimate responses",
+    "Detect spoofed packets",
+    "Block attacker"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Capture DNS Traffic",
+      "description": "Collect DNS queries and responses from the affected network.",
+      "points": 25,
+      "hint": "Filter for UDP or TCP port 53.",
+      "validation": {
+        "type": "dns_analysis",
+        "expected": "dns"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Compare Legitimate Responses",
+      "description": "Compare DNS answers with a trusted resolver.",
+      "points": 25,
+      "hint": "Use dig against multiple DNS servers.",
+      "validation": {
+        "type": "dns_analysis",
+        "expected": "trusted resolver"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Detect Spoofed Packets",
+      "description": "Identify mismatched or forged DNS responses.",
+      "points": 25,
+      "hint": "Look for duplicate transaction IDs or unexpected answer IPs.",
+      "validation": {
+        "type": "attacker_detected",
+        "expected": "spoofed"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Block Attacker",
+      "description": "Block the source responsible for DNS manipulation.",
+      "points": 25,
+      "hint": "Apply a firewall rule against the attacker IP.",
+      "validation": {
+        "type": "attacker_detected",
+        "expected": "blocked"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

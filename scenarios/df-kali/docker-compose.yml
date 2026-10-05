@@ -1,0 +1,49 @@
+services:
+  kali:
+    build:
+      context: ../kali-terminal/kali
+      dockerfile: Dockerfile
+    container_name: cyber_df_kali
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      dfnet:
+        ipv4_address: 172.31.0.20
+    expose:
+      - "22"
+    environment:
+      - USER=student
+      - PASSWORD=student123
+
+  guacd:
+    image: guacamole/guacd:latest
+    container_name: cyber_df_guacd
+    networks:
+      - dfnet
+
+  guacamole:
+    build:
+      context: .
+      dockerfile: Dockerfile.guacamole
+    container_name: cyber_df_guacamole
+    depends_on:
+      - guacd
+      - kali
+    environment:
+      GUACD_HOSTNAME: guacd
+      GUACD_PORT: 4822
+    ports:
+      - "8082:8080"
+    networks:
+      - dfnet
+
+networks:
+  dfnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.31.0.0/24

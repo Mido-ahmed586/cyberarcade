@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.pyo
+# .env is intentionally tracked (private repo)
+.venv/
+venv/
+venv_*/
+*.egg-info/
+dist/
+build/
+.idea/
+.vscode/
+*.db
+*.sqlite3

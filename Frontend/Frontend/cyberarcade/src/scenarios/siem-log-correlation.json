@@ -1,0 +1,81 @@
+{
+  "id": "siem-log-correlation",
+  "order": 13,
+  "title": "SIEM Log Correlation",
+  "category": "Network Security",
+  "difficulty": "Hard",
+  "duration": "75 min",
+  "story": "Students use SIEM tools to correlate logs from multiple systems and identify an attack chain.",
+  "objectives": [
+    "Search logs",
+    "Correlate alerts",
+    "Identify IOC",
+    "Trace attack timeline",
+    "Generate incident report"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Search Logs",
+      "description": "Search SIEM logs for events related to the suspected attack.",
+      "points": 20,
+      "hint": "Start with authentication, firewall, endpoint, and DNS logs.",
+      "validation": {
+        "type": "query_results",
+        "expected": "events"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Correlate Alerts",
+      "description": "Link related alerts across multiple systems.",
+      "points": 20,
+      "hint": "Correlate by IP, username, hostname, and timestamp.",
+      "validation": {
+        "type": "query_results",
+        "expected": "correlation"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Identify IOC",
+      "description": "Extract a clear indicator of compromise from the correlated data.",
+      "points": 20,
+      "hint": "Look for malicious IPs, domains, hashes, or account names.",
+      "validation": {
+        "type": "query_results",
+        "expected": "ioc"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Trace Attack Timeline",
+      "description": "Build the attack sequence from first contact to impact.",
+      "points": 20,
+      "hint": "Sort correlated events by time.",
+      "validation": {
+        "type": "query_results",
+        "expected": "timeline"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Generate Incident Report",
+      "description": "Summarize the attack chain, evidence, and recommended response.",
+      "points": 20,
+      "hint": "Include scope, IOCs, timeline, and containment steps.",
+      "validation": {
+        "type": "report_submission",
+        "expected": "incident report"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "mode": "partial",
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

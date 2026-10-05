@@ -1,0 +1,115 @@
+{
+  "id": "ssh-bruteforce-defense",
+  "order": 1,
+  "title": "SSH Brute Force Defense",
+  "category": "Network Security",
+  "difficulty": "Easy",
+  "duration": "45 min",
+  "story": "A Linux server is under SSH brute-force attack. Students must investigate authentication logs, install Fail2Ban, configure protection, and verify that the attacker IP gets banned.",
+  "objectives": [
+    "Inspect auth logs",
+    "Detect failed logins",
+    "Install Fail2Ban",
+    "Configure jail.local",
+    "Restart service",
+    "Verify attacker ban"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Inspect Auth Logs",
+      "description": "Review authentication logs on the Linux server and locate SSH login attempts.",
+      "points": 15,
+      "hint": "Check /var/log/auth.log for sshd entries.",
+      "validation": {
+        "type": "log_analysis",
+        "expected": "auth.log"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Detect Failed Logins",
+      "description": "Identify repeated failed SSH password attempts from the attacker.",
+      "points": 20,
+      "hint": "Search the auth log for Failed password.",
+      "validation": {
+        "type": "file_contains",
+        "expected": "Failed password"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Install Fail2Ban",
+      "description": "Install Fail2Ban package.",
+      "points": 15,
+      "hint": "Use apt install fail2ban.",
+      "validation": {
+        "type": "service_running",
+        "expected": "fail2ban"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Configure jail.local",
+      "description": "Create an SSH jail configuration that protects the sshd service.",
+      "points": 20,
+      "hint": "Configure an [sshd] jail in /etc/fail2ban/jail.local.",
+      "validation": {
+        "type": "file_contains",
+        "expected": "[sshd]"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Restart Service",
+      "description": "Restart Fail2Ban so the new SSH jail configuration is loaded.",
+      "points": 10,
+      "hint": "Restart the fail2ban service after editing jail.local.",
+      "validation": {
+        "type": "service_running",
+        "expected": "fail2ban"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Verify Attacker Ban",
+      "description": "Confirm the attacker IP is banned by the SSH jail.",
+      "points": 20,
+      "hint": "Use fail2ban-client status sshd.",
+      "validation": {
+        "type": "banned_ip_detected",
+        "expected": "Banned IP list"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "runtime": {
+    "slug": "ssh-bruteforce",
+    "terminal": "guacamole",
+    "terminal_type": "dual",
+    "attacker": {
+      "label": "Attacker (Kali)",
+      "role": "attacker",
+      "ip": "172.25.0.20",
+      "user": "attacker",
+      "password": "attacker123",
+      "url_endpoint": "/terminal-url"
+    },
+    "defender": {
+      "label": "Defender (Target)",
+      "role": "defender",
+      "ip": "172.25.0.10",
+      "user": "defender",
+      "password": "defender123",
+      "url_endpoint": "/defender-url"
+    },
+    "target_ip": "172.25.0.10",
+    "ssh_port": "22"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

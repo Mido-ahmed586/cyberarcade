@@ -1,0 +1,80 @@
+{
+  "id": "phishing-investigation",
+  "order": 15,
+  "title": "Phishing Investigation",
+  "category": "Network Security",
+  "difficulty": "Hard",
+  "duration": "70 min",
+  "story": "Employees received phishing emails. Students analyze headers, attachments, and links to determine legitimacy.",
+  "objectives": [
+    "Analyze email headers",
+    "Identify spoofing",
+    "Extract IOC",
+    "Block malicious domains",
+    "Write incident summary"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Analyze Email Headers",
+      "description": "Inspect email headers for routing, sender, and authentication evidence.",
+      "points": 20,
+      "hint": "Review Received, SPF, DKIM, and DMARC fields.",
+      "validation": {
+        "type": "email_analysis",
+        "expected": "headers"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Identify Spoofing",
+      "description": "Determine whether the sender identity was spoofed.",
+      "points": 20,
+      "hint": "Compare From, Return-Path, and authentication results.",
+      "validation": {
+        "type": "email_analysis",
+        "expected": "spoofing"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Extract IOC",
+      "description": "Extract malicious links, domains, attachments, or sender indicators.",
+      "points": 20,
+      "hint": "Defang URLs before reporting them.",
+      "validation": {
+        "type": "correct_ioc",
+        "expected": "ioc"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Block Malicious Domains",
+      "description": "Block phishing domains in the appropriate security control.",
+      "points": 20,
+      "hint": "Add malicious domains to DNS or web filtering controls.",
+      "validation": {
+        "type": "correct_ioc",
+        "expected": "blocked"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Write Incident Summary",
+      "description": "Summarize phishing evidence and recommended actions.",
+      "points": 20,
+      "hint": "Include affected users, IOCs, and containment steps.",
+      "validation": {
+        "type": "email_analysis",
+        "expected": "summary"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

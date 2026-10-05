@@ -1,0 +1,115 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CyberArcade — Full-stack Docker Compose
+#
+# Usage:
+#   docker-compose up --build        # first run (builds images + seeds DB)
+#   docker-compose up                # subsequent runs
+#   docker-compose down -v           # tear down (removes postgres volume too)
+#
+# After the stack is up:
+#   Frontend  →  http://localhost:5173
+#   Backend   →  http://localhost:8000
+#   API Docs  →  http://localhost:8000/docs
+#
+# Local demo/admin credentials are configured through environment variables or seed data.
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── PostgreSQL ───────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cyberarcade_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: cyberarcade
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cyberarcade_admin -d cyberarcade"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  # ── FastAPI backend ──────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./Backend/Backend/cyberarcade-backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      # Database — uses the Docker service name "db" instead of localhost
+      DATABASE_URL: postgresql+asyncpg://cyberarcade_admin:${POSTGRES_PASSWORD:-change-me}@db:5432/cyberarcade
+
+      # Security — change SECRET_KEY in production!
+      SECRET_KEY: ${SECRET_KEY:-change-me}
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: "30"
+      REFRESH_TOKEN_EXPIRE_DAYS: "7"
+
+      # App
+      APP_NAME: CyberArcade
+      DEBUG: "true"
+      ALLOWED_ORIGINS: "http://localhost:5173,http://localhost:3000"
+      FRONTEND_URL: "http://localhost:5173"
+      BACKEND_PUBLIC_URL: "http://localhost:8000"
+
+      # AI / Chatbot — set GROQ_API_KEY in your shell or a .env file
+      AI_PROVIDER: openai-compatible
+      OPENAI_COMPATIBLE_BASE_URL: https://api.groq.com/openai/v1
+      OPENAI_COMPATIBLE_API_KEY: ${GROQ_API_KEY:-}
+      OPENAI_COMPATIBLE_MODEL: llama-3.1-8b-instant
+
+      # Scenarios path (mounted from host for lab runtime)
+      SCENARIOS_BASE: /app/scenarios
+
+      # Email (optional — leave blank to disable verification emails)
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+
+      # Google OAuth (optional)
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+
+      # Admin seed credentials — set these in your local .env file
+      CYBERARCADE_ADMIN_EMAIL: ${CYBERARCADE_ADMIN_EMAIL:-}
+      CYBERARCADE_ADMIN_PASSWORD: ${CYBERARCADE_ADMIN_PASSWORD:-}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./scenarios:/app/scenarios:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Uncomment to mount source for live-reload during development:
+    #   - ./Backend/Backend/cyberarcade-backend:/app
+
+  # ── React / Vite frontend ────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./Frontend/Frontend/cyberarcade
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      # This URL is used by the browser — it must resolve from the host machine
+      VITE_API_URL: http://localhost:8000
+      VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+# ── Named volumes ─────────────────────────────────────────────────────────────
+volumes:
+  postgres_data:
+    driver: local

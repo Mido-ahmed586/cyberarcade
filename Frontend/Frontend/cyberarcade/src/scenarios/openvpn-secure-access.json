@@ -1,0 +1,80 @@
+{
+  "id": "openvpn-secure-access",
+  "order": 8,
+  "title": "OpenVPN Secure Access",
+  "category": "Network Security",
+  "difficulty": "Medium",
+  "duration": "70 min",
+  "story": "Students configure a secure VPN connection between clients and the protected network using OpenVPN.",
+  "objectives": [
+    "Configure OpenVPN",
+    "Generate certificates",
+    "Connect client",
+    "Verify tun0 interface",
+    "Test encrypted communication"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Configure OpenVPN",
+      "description": "Create or review the OpenVPN server configuration.",
+      "points": 20,
+      "hint": "Check server.conf for port, proto, dev, and certificate paths.",
+      "validation": {
+        "type": "config_check",
+        "expected": "server.conf"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Generate Certificates",
+      "description": "Generate the required CA, server, and client certificate material.",
+      "points": 20,
+      "hint": "Use Easy-RSA or existing OpenVPN certificate tooling.",
+      "validation": {
+        "type": "config_check",
+        "expected": "ca.crt"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Connect Client",
+      "description": "Connect a client to the VPN using the generated profile.",
+      "points": 20,
+      "hint": "Start the client with the .ovpn profile.",
+      "validation": {
+        "type": "vpn_connected",
+        "expected": "connected"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Verify tun0 Interface",
+      "description": "Confirm that the VPN tunnel interface exists on the client.",
+      "points": 20,
+      "hint": "Use ip addr or ifconfig to look for tun0.",
+      "validation": {
+        "type": "interface_exists",
+        "expected": "tun0"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Test Encrypted Communication",
+      "description": "Verify traffic can cross the VPN tunnel securely.",
+      "points": 20,
+      "hint": "Ping or curl an internal VPN address.",
+      "validation": {
+        "type": "vpn_connected",
+        "expected": "encrypted"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

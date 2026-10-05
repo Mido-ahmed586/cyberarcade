@@ -1,0 +1,71 @@
+# ─── Environment & Secrets ───────────────────────────────────────────
+# Environment & secret files — NEVER commit these
+.env
+**/.env
+.env.*
+!.env.example
+!**/.env.example
+.env.local
+.env.production
+*.pem
+*.key
+*.p12
+
+# ─── Python ──────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+venv_*/
+env/
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
+.eggs/
+.mypy_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.ruff_cache/
+
+# ─── Node / Frontend ─────────────────────────────────────────────────
+node_modules/
+frontend/cyberarcade/dist/
+frontend/cyberarcade/.vite/
+*.local
+
+# ─── Docker ──────────────────────────────────────────────────────────
+# Do not ignore docker-compose files — they are needed
+
+# ─── Database ──��─────────────────────────────────────────────────────
+*.sqlite3
+*.db
+postgres-data/
+
+# ─── OS ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── IDEs ────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── Logs ────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Build artefacts ─────────────────────────────────────────────────
+*.sarif
+*-audit.json
+pip-audit.json
+safety-report.json
+npm-audit.json

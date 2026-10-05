@@ -1,0 +1,80 @@
+{
+  "id": "apache-web-server-hardening",
+  "order": 9,
+  "title": "Apache Web Server Hardening",
+  "category": "Network Security",
+  "difficulty": "Medium",
+  "duration": "55 min",
+  "story": "A vulnerable Apache server contains insecure configurations. Students must secure the web server and reduce attack surface.",
+  "objectives": [
+    "Disable directory listing",
+    "Configure HTTPS",
+    "Remove insecure modules",
+    "Harden headers",
+    "Restart Apache"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Disable Directory Listing",
+      "description": "Prevent Apache from exposing directory indexes.",
+      "points": 20,
+      "hint": "Remove Indexes from Options.",
+      "validation": {
+        "type": "config_check",
+        "expected": "-Indexes"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Configure HTTPS",
+      "description": "Enable HTTPS for the web server.",
+      "points": 20,
+      "hint": "Enable SSL and configure a TLS virtual host.",
+      "validation": {
+        "type": "https_enabled",
+        "expected": "443"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Remove Insecure Modules",
+      "description": "Disable unnecessary or risky Apache modules.",
+      "points": 20,
+      "hint": "Use a2dismod for modules that are not required.",
+      "validation": {
+        "type": "config_check",
+        "expected": "disabled"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Harden Headers",
+      "description": "Add security headers that reduce browser-side risk.",
+      "points": 20,
+      "hint": "Set headers such as X-Frame-Options and X-Content-Type-Options.",
+      "validation": {
+        "type": "config_check",
+        "expected": "X-Frame-Options"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Restart Apache",
+      "description": "Restart Apache and confirm the hardened service is running.",
+      "points": 20,
+      "hint": "Restart apache2 or httpd.",
+      "validation": {
+        "type": "service_running",
+        "expected": "apache"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}

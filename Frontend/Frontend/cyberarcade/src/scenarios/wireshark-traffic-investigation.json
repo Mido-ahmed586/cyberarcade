@@ -1,0 +1,80 @@
+{
+  "id": "wireshark-traffic-investigation",
+  "order": 7,
+  "title": "Wireshark Traffic Investigation",
+  "category": "Network Security",
+  "difficulty": "Medium",
+  "duration": "55 min",
+  "story": "Students analyze a PCAP file to identify suspicious network behavior and extract attacker information.",
+  "objectives": [
+    "Open PCAP",
+    "Filter packets",
+    "Identify attacker IP",
+    "Detect protocols",
+    "Extract credentials"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Open PCAP",
+      "description": "Load the provided packet capture in Wireshark or tshark.",
+      "points": 20,
+      "hint": "Open the .pcap file and inspect the packet list.",
+      "validation": {
+        "type": "pcap_analysis",
+        "expected": "pcap"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Filter Packets",
+      "description": "Use display filters to narrow the traffic to suspicious conversations.",
+      "points": 20,
+      "hint": "Try filters for ip.addr, tcp.stream, http, dns, or ftp.",
+      "validation": {
+        "type": "pcap_analysis",
+        "expected": "filter"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Identify Attacker IP",
+      "description": "Determine which host initiated suspicious traffic.",
+      "points": 20,
+      "hint": "Follow streams and compare source addresses.",
+      "validation": {
+        "type": "answer_validation",
+        "expected": "attacker ip"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Detect Protocols",
+      "description": "Identify the protocols involved in the suspicious activity.",
+      "points": 20,
+      "hint": "Use protocol hierarchy statistics.",
+      "validation": {
+        "type": "pcap_analysis",
+        "expected": "protocol"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Extract Credentials",
+      "description": "Find any exposed credentials in cleartext traffic.",
+      "points": 20,
+      "hint": "Follow TCP streams for HTTP, FTP, or basic auth data.",
+      "validation": {
+        "type": "answer_validation",
+        "expected": "credentials"
+      }
+    }
+  ],
+  "autosolve": {
+    "enabled": true,
+    "script": "autosolve.sh"
+  },
+  "scoring": {
+    "max_points": 100
+  }
+}
