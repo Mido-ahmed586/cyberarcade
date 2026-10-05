@@ -1,4 +1,0 @@
-PLACEHOLDER — Replace this file with your actual banner PNG.
-Recommended dimensions: 1280x640 px (2:1 ratio for GitHub social preview).
-Dark background, cybersecurity theme, platform name prominently displayed.
-File should be named: banner.png
