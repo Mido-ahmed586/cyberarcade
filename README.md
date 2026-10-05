@@ -2,9 +2,7 @@
 
 <br/>
 
-<!-- LOGO PLACEHOLDER -->
-<!-- Replace with: <img src="assets/logo/logo.png" width="120" alt="CyberArcade Logo" /> -->
-<img src="assets/logo/logo-placeholder.png" width="120" alt="CyberArcade Logo" />
+<img src="assets/logo/logo.png" width="120" alt="CyberArcade Logo" />
 
 <h1>CyberArcade</h1>
 
@@ -12,9 +10,7 @@
 
 <p><em>Master the Art of Cyber Offense. Build Your Defense.</em></p>
 
-<!-- BANNER PLACEHOLDER -->
-<!-- Replace with: <img src="assets/banner/banner.png" width="100%" alt="CyberArcade Banner" /> -->
-<img src="assets/banner/banner-placeholder.png" width="800" alt="CyberArcade Platform Banner" />
+<img src="assets/banner/banner.png" width="800" alt="CyberArcade Platform Banner" />
 
 <br/><br/>
 
@@ -82,6 +78,17 @@ Instructors manage classrooms, track student progress, and publish content throu
 | Supported Roles | Student · Instructor · Admin |
 | Container Isolation | Full Docker network segregation |
 
+
+## Why CyberArcade?
+
+CyberArcade is built around one goal: **turn cybersecurity theory into repeatable hands-on practice**.
+
+- **Learn → Practice → Validate:** every course connects learning content to practical lab tasks.
+- **Real environments:** students work with real security tools and isolated Docker-based targets.
+- **Guided, not spoon-fed:** time-gated hints and an AI coach help learners progress without immediately revealing solutions.
+- **Built for educators:** instructors can manage classrooms, assign training, and track progress.
+- **Safe by design:** labs are isolated and intended for controlled, authorized training environments.
+
 ---
 
 ## Key Features
@@ -141,43 +148,43 @@ Tiered subscription plans control access to advanced courses and lab environment
 <table>
   <tr>
     <td align="center">
-      <img src="screenshots/landing.png" alt="Landing Page" width="400"/>
+      <img src="screenshots/landing.png" alt="Landing Page" width="420"/>
       <br/><sub><b>Landing Page</b></sub>
     </td>
     <td align="center">
-      <img src="screenshots/dashboard.png" alt="Student Dashboard" width="400"/>
+      <img src="screenshots/dashboard.png" alt="Student Dashboard" width="420"/>
       <br/><sub><b>Student Dashboard</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="screenshots/courses.png" alt="Course Catalog" width="400"/>
+      <img src="screenshots/courses.png" alt="Course Catalog" width="420"/>
       <br/><sub><b>Course Catalog</b></sub>
     </td>
     <td align="center">
-      <img src="screenshots/lab.png" alt="Lab Environment" width="400"/>
+      <img src="screenshots/lab.png" alt="Lab Environment" width="420"/>
       <br/><sub><b>Live Lab Terminal</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="screenshots/ai-coach.png" alt="AI Coach" width="400"/>
+      <img src="screenshots/ai-coach.png" alt="AI Coach" width="420"/>
       <br/><sub><b>AI Cybersecurity Coach</b></sub>
     </td>
     <td align="center">
-      <img src="screenshots/instructor.png" alt="Instructor Dashboard" width="400"/>
+      <img src="screenshots/instructor.png" alt="Instructor Dashboard" width="420"/>
       <br/><sub><b>Instructor Dashboard</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center" colspan="2">
-      <img src="screenshots/admin.png" alt="Admin Panel" width="400"/>
+      <img src="screenshots/admin.png" alt="Admin Panel" width="420"/>
       <br/><sub><b>Admin Panel</b></sub>
     </td>
   </tr>
 </table>
 
-> **Add screenshots:** Run the platform locally, navigate to each page, and save captures to the `screenshots/` directory using the filenames above.
+> The screenshots above showcase the main student, instructor, AI, and administration workflows.
 
 ---
 
