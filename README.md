@@ -19,15 +19,8 @@
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org)
 
-<!-- STATUS BADGES -->
-[![CI](https://github.com/Mido-ahmed586/cyberarcade/actions/workflows/ci.yml/badge.svg)](https://github.com/Mido-ahmed586/cyberarcade/actions/workflows/ci.yml)
-[![Security Scan](https://github.com/Mido-ahmed586/cyberarcade/actions/workflows/security-scan.yml/badge.svg)](https://github.com/Mido-ahmed586/cyberarcade/actions/workflows/security-scan.yml)
-[![License](https://img.shields.io/github/license/Mido-ahmed586/cyberarcade)](LICENSE)
 
-<!-- COMMUNITY BADGES -->
-[![Stars](https://img.shields.io/github/stars/Mido-ahmed586/cyberarcade?style=flat-square&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/stargazers)
-[![Issues](https://img.shields.io/github/issues/Mido-ahmed586/cyberarcade?style=flat-square&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/issues)
-[![Contributors](https://img.shields.io/github/contributors/Mido-ahmed586/cyberarcade?style=flat-square&logo=github)](https://github.com/Mido-ahmed586/cyberarcade/graphs/contributors)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <br/>
 
