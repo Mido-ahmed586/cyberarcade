@@ -63,7 +63,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: backend/cyberarcade-backend
+        working-directory: Backend/Backend/cyberarcade-backend
 
     env:
       DATABASE_URL: postgresql+asyncpg://cyberarcade:testpassword@localhost:5432/cyberarcade_test
