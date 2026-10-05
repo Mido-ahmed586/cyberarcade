@@ -377,7 +377,7 @@ cp .env.example .env
 docker compose up -d --build
 
 # 4. Seed the database with courses and default admin
-docker exec cyberarcade-backend-1 python seeds/seed_all.py
+docker compose exec backend python seeds/seed_all.py
 
 # 5. Open the platform
 #    Frontend:  http://localhost:5173
